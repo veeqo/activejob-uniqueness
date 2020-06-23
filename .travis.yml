@@ -1,0 +1,21 @@
+---
+dist: xenial
+language: ruby
+services:
+  - redis-server
+cache: bundler
+rvm:
+  - 2.5.8
+  - 2.6.6
+  - 2.7.1
+env:
+  - ACTIVEJOB_VERSION="~> 4.2.11"
+  - ACTIVEJOB_VERSION="~> 5.2.4"
+  - ACTIVEJOB_VERSION="~> 6.0.3"
+jobs:
+  exclude:
+    - rvm: 2.7.1
+      env: ACTIVEJOB_VERSION="~> 4.2.11"
+
+before_install: gem install bundler -v 1.17.3
+bundler_args: --jobs 3 --retry 3

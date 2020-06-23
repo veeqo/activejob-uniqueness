@@ -1,0 +1,38 @@
+AllCops:
+  NewCops: enable
+
+Layout/LineLength:
+  Max: 120
+  Exclude:
+    - spec/**/*
+
+Layout/MultilineMethodCallIndentation:
+  Exclude:
+    - spec/**/*
+
+Lint/AmbiguousBlockAssociation:
+  Exclude:
+    - spec/**/*
+
+Metrics/AbcSize:
+  Exclude:
+    - spec/**/*
+
+Metrics/BlockLength:
+  Exclude:
+    - activejob-uniqueness.gemspec
+    - spec/**/*
+
+Metrics/MethodLength:
+  Exclude:
+    - spec/**/*
+
+Style/ClassAndModuleChildren:
+  Exclude:
+    - spec/**/*
+
+Style/Documentation:
+  Enabled: false
+
+Style/RescueModifier:
+  Enabled: false
