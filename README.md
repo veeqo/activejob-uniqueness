@@ -15,7 +15,7 @@ Inspired by [SidekiqUniqueJobs](https://github.com/mhenrixon/sidekiq-unique-jobs
 
 ## Installation
 
-Add the "meta-tags" gem to your Gemfile.
+Add the `activejob-uniqueness` gem to your Gemfile.
 
 ```ruby
 gem 'activejob-uniqueness'
