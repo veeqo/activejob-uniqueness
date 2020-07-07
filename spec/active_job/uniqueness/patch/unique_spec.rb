@@ -123,4 +123,32 @@ describe ActiveJob::Uniqueness::Patch, '.unique' do
       expect { subject }.to raise_error(ActiveJob::Uniqueness::InvalidOnConflictAction, "Unexpected 'panic' action on conflict")
     end
   end
+
+  describe 'inheritance' do
+    class self::BaseJob < ActiveJob::Base
+      unique :until_executing, lock_ttl: 2.hours
+    end
+
+    class self::InheritedJob < self::BaseJob
+    end
+
+    class self::NotInheritedJob < ActiveJob::Base
+    end
+
+    it 'preserves lock_strategy_class for inherited classes' do
+      expect(self.class::InheritedJob.lock_strategy_class).to eq(ActiveJob::Uniqueness::Strategies::UntilExecuting)
+    end
+
+    it 'preserves lock_options for inherited classes' do
+      expect(self.class::InheritedJob.lock_options).to eq(lock_ttl: 2.hours)
+    end
+
+    it 'does not impact lock_strategy_class of not inherited classes' do
+      expect(self.class::NotInheritedJob.lock_strategy_class).to eq(nil)
+    end
+
+    it 'does not impact lock_options of not inherited classes' do
+      expect(self.class::NotInheritedJob.lock_options).to eq(nil)
+    end
+  end
 end
