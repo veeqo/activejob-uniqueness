@@ -50,7 +50,9 @@ module ActiveJob
           block.call
         end
 
-        def after_perform; end
+        def after_perform
+          # Expected to be overriden in the descendant strategy
+        end
 
         module LockingOnEnqueue
           def before_enqueue
