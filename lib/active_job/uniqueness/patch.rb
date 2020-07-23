@@ -72,18 +72,8 @@ module ActiveJob
       end
     end
 
-    if defined?(Rails)
-      class Railtie < Rails::Railtie
-        initializer 'active_job_uniqueness.patch_active_job' do
-          ActiveSupport.on_load(:active_job) do
-            ActiveJob::Base.include ActiveJob::Uniqueness::Patch
-          end
-        end
-      end
-    else
-      ActiveSupport.on_load(:active_job) do
-        ActiveJob::Base.include ActiveJob::Uniqueness::Patch
-      end
+    ActiveSupport.on_load(:active_job) do
+      ActiveJob::Base.include ActiveJob::Uniqueness::Patch
     end
   end
 end
