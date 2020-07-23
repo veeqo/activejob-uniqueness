@@ -2,6 +2,6 @@
 
 module ActiveJob
   module Uniqueness
-    VERSION = '0.1.0'
+    VERSION = '0.1.1'
   end
 end
