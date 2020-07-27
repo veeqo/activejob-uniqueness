@@ -74,6 +74,11 @@ module ActiveJob
 
     ActiveSupport.on_load(:active_job) do
       ActiveJob::Base.include ActiveJob::Uniqueness::Patch
+
+      if ::ActiveJob.const_defined?(:Railtie) &&
+         ActiveJob::Railtie.config.active_job.queue_adapter.to_sym == :sidekiq
+        require_relative 'patch/sidekiq'
+      end
     end
   end
 end
