@@ -12,6 +12,7 @@ env:
   - ACTIVEJOB_VERSION="~> 4.2.11"
   - ACTIVEJOB_VERSION="~> 5.2.4"
   - ACTIVEJOB_VERSION="~> 6.0.3"
+  - ACTIVEJOB_VERSION="~> 6.0.3" SIDEKIQ_VERSION="~> 6.0.0"
 jobs:
   exclude:
     - rvm: 2.7.1
