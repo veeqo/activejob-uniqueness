@@ -55,7 +55,7 @@ module ActiveJob
       end
 
       def lock_strategy
-        @lock_strategy ||= lock_strategy_class.new(lock_options.merge(lock_key: lock_key, job: self))
+        @lock_strategy ||= lock_strategy_class.new(**lock_options.merge(lock_key: lock_key, job: self))
       end
 
       # Override in your job class if you want to customize arguments set for a digest.
