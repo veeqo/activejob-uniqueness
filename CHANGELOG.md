@@ -1,3 +1,8 @@
+## Changes Between 0.1.2 and 0.1.3 (unreleased)
+
+Fix deprecation warnings for ruby 2.7
+[PR](https://github.com/veeqo/activejob-uniqueness/pull/7) by @tonobo
+
 ## Changes Between 0.1.1 and 0.1.2
 
 Release lock for Sidekiq adapter when all Sidekiq attempts were unsuccessful or job is deleted manually from Sidekiq::Web
