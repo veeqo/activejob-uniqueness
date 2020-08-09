@@ -21,16 +21,15 @@ Gem::Specification.new do |spec|
     spec.metadata['changelog_uri'] = 'https://github.com/veeqo/activejob-uniqueness/blob/master/CHANGELOG.md'
   end
 
-  spec.files = Dir.chdir(File.expand_path(__dir__)) do
-    `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(spec|\.rubocop.yml)/}) }
-  end
+  spec.files = Dir['CHANGELOG.md', 'LICENSE.txt', 'README.md', 'lib/**/*']
+
   spec.require_paths = ['lib']
 
-  spec.add_dependency 'activejob', '>= 4.2'
+  spec.add_dependency 'activejob', '>= 4.2', '< 7'
   spec.add_dependency 'redlock', '>= 1.2', '< 2'
 
-  spec.add_development_dependency 'bundler'
+  spec.add_development_dependency 'appraisal', '~> 2.3.0'
+  spec.add_development_dependency 'bundler', '>= 2.0'
   spec.add_development_dependency 'pry-byebug'
-  spec.add_development_dependency 'rake'
   spec.add_development_dependency 'rspec', '~> 3.0'
 end

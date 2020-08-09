@@ -1,5 +1,7 @@
 AllCops:
   NewCops: enable
+  Exclude:
+    - gemfiles/**/*
 
 Layout/LineLength:
   Max: 120
