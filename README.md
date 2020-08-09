@@ -93,6 +93,26 @@ And then writes to `ActiveJob::Base.logger`.
 
 ### ActiveJob prior to version `6.1` will always log `Enqueued MyJob (Job ID) ...` even if the callback chain was halted. [Details](https://github.com/rails/rails/pull/37830)
 
+## Testing
+
+Run redis server (in separate console):
+```
+docker run --rm -p 6379:6379 redis
+```
+
+Run tests with:
+
+```sh
+bundle
+rake
+```
+
+Use [wwtd](https://github.com/grosser/wwtd) to run test matrix:
+```sh
+gem install wwtd
+wwtd
+```
+
 ## Contributing
 
 Bug reports and pull requests are welcome on GitHub at https://github.com/veeqo/activejob-uniqueness.
