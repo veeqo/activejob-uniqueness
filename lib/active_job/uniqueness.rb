@@ -7,7 +7,7 @@ require 'openssl'
 require 'active_job/uniqueness/version'
 require 'active_job/uniqueness/errors'
 require 'active_job/uniqueness/log_subscriber'
-require 'active_job/uniqueness/patch'
+require 'active_job/uniqueness/active_job_patch'
 
 module ActiveJob
   module Uniqueness

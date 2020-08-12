@@ -16,7 +16,7 @@ module ActiveJob
     #   end
     # end
     #
-    module Patch
+    module ActiveJobPatch
       extend ActiveSupport::Concern
 
       class_methods do
@@ -73,7 +73,7 @@ module ActiveJob
     end
 
     ActiveSupport.on_load(:active_job) do
-      ActiveJob::Base.include ActiveJob::Uniqueness::Patch
+      ActiveJob::Base.include ActiveJob::Uniqueness::ActiveJobPatch
 
       if ::ActiveJob.const_defined?(:Railtie) &&
          ActiveJob::Railtie.config.active_job.queue_adapter.to_sym == :sidekiq

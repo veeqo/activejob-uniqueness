@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-describe ActiveJob::Uniqueness::Patch, '.unlock!', type: :integration do
+describe ActiveJob::Uniqueness::ActiveJobPatch, '.unlock!', type: :integration do
   class self::Job < ActiveJob::Base
     unique :until_expired
   end
