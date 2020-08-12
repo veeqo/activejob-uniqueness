@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-describe ActiveJob::Uniqueness::Patch, '.unique' do
+describe ActiveJob::Uniqueness::ActiveJobPatch, '.unique' do
   context 'when an custom strategy is given' do
     context 'when matching custom strategy is configured' do
       class self::Job < ActiveJob::Base; end
