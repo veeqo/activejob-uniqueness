@@ -6,6 +6,9 @@ Fix deprecation warnings for ruby 2.7
 Use appraisal gem to control gem versions of tests matrix
 [PR](https://github.com/veeqo/activejob-uniqueness/pull/8) by @sharshenov
 
+Refactor jobs unlock by Sidekiq API (fixes NoMethodError on rails/rake commands in 0.1.2)
+[PR](https://github.com/veeqo/activejob-uniqueness/pull/9) by @sharshenov
+
 ## Changes Between 0.1.1 and 0.1.2
 
 Release lock for Sidekiq adapter when all Sidekiq attempts were unsuccessful or job is deleted manually from Sidekiq::Web
