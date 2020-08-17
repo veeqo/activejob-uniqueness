@@ -1,25 +1,29 @@
-## Changes Between 0.1.2 and 0.1.3 (unreleased)
+# Changelog
+All notable changes to this project will be documented in this file.
 
-Fix deprecation warnings for ruby 2.7
-[PR](https://github.com/veeqo/activejob-uniqueness/pull/7) by @tonobo
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
-Use appraisal gem to control gem versions of tests matrix
-[PR](https://github.com/veeqo/activejob-uniqueness/pull/8) by @sharshenov
+## [Unreleased](https://github.com/veeqo/activejob-uniqueness/compare/v0.1.2...HEAD)
 
-Refactor jobs unlock by Sidekiq API (fixes NoMethodError on rails/rake commands in 0.1.2)
-[PR](https://github.com/veeqo/activejob-uniqueness/pull/9) by @sharshenov
+### Fixed
+- [#7](https://github.com/veeqo/activejob-uniqueness/pull/7) Fix deprecation warnings for ruby 2.7 by [@tonobo](https://github.com/tonobo)
 
-## Changes Between 0.1.1 and 0.1.2
+### Changed
+- [#8](https://github.com/veeqo/activejob-uniqueness/pull/8) Use appraisal gem to control gem versions of tests matrix
+- [#9](https://github.com/veeqo/activejob-uniqueness/pull/9) Refactor of Sidekiq API patch. Fixes [#6](https://github.com/veeqo/activejob-uniqueness/issues/6) Rails boot error for version 0.1.2
+- [#10](https://github.com/veeqo/activejob-uniqueness/pull/10) Refactor changelog to comply with Keep a Changelog
 
-Release lock for Sidekiq adapter when all Sidekiq attempts were unsuccessful or job is deleted manually from Sidekiq::Web
-[PR](https://github.com/veeqo/activejob-uniqueness/pull/5) by @vbyno
+## [0.1.2](https://github.com/veeqo/activejob-uniqueness/compare/v0.1.1...v0.1.2) - 2020-07-30
 
-## Changes Between 0.1.0 and 0.1.1
+### Added
+-  [#5](https://github.com/veeqo/activejob-uniqueness/pull/5) Release lock for Sidekiq adapter by [@vbyno](https://github.com/vbyno)
 
-Fixed NoMethodError on `Rails.application.eager_load!` in Rails initializer
-```
-NoMethodError: undefined method `unique' for MyJob:Class
-```
-[PR](https://github.com/veeqo/activejob-uniqueness/pull/4)
+## [0.1.1](https://github.com/veeqo/activejob-uniqueness/compare/v0.1.0...v0.1.1) - 2020-07-23
 
-## Original Release: 0.1.0
+### Fixed
+- [#4](https://github.com/veeqo/activejob-uniqueness/pull/4) Fix `NoMethodError` on `Rails.application.eager_load!` in Rails initializer
+
+## [0.1.0](https://github.com/veeqo/activejob-uniqueness/releases/tag/v0.1.0) - 2020-07-05
+
+### Added
+- Job uniqueness for ActiveJob
