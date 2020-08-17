@@ -113,6 +113,10 @@ gem install wwtd
 wwtd
 ```
 
+## Sidekiq adapter support
+
+ActiveJob::Uniqueness patches Sidekiq API to unset locks on jobs cleanup. Starting Sidekiq 5.1 job death also triggers locks cleanup.
+
 ## Contributing
 
 Bug reports and pull requests are welcome on GitHub at https://github.com/veeqo/activejob-uniqueness.

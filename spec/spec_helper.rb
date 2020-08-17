@@ -5,12 +5,6 @@ require 'active_job'
 require 'active_job/uniqueness'
 require 'pry-byebug'
 
-if ENV['SIDEKIQ_VERSION']
-  require 'sidekiq'
-  require 'active_job/railtie'
-  ActiveJob::Railtie.config.active_job.queue_adapter = :sidekiq
-end
-
 ActiveJob::Base.queue_adapter = :test
 
 ActiveJob::Base.logger = ActiveSupport::TaggedLogging.new(Logger.new(nil))

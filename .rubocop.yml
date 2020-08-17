@@ -29,6 +29,9 @@ Metrics/MethodLength:
   Exclude:
     - spec/**/*
 
+Style/AsciiComments:
+  Enabled: false
+
 Style/ClassAndModuleChildren:
   Exclude:
     - spec/**/*
