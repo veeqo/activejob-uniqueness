@@ -3,7 +3,9 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
-## [Unreleased](https://github.com/veeqo/activejob-uniqueness/compare/v0.1.2...HEAD)
+## [Unreleased](https://github.com/veeqo/activejob-uniqueness/compare/v0.1.3...HEAD)
+
+## [0.1.3](https://github.com/veeqo/activejob-uniqueness/compare/v0.1.2...v0.1.3) - 2020-08-17
 
 ### Fixed
 - [#7](https://github.com/veeqo/activejob-uniqueness/pull/7) Fix deprecation warnings for ruby 2.7 by [@tonobo](https://github.com/tonobo)
