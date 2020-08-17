@@ -14,9 +14,23 @@ module ActiveJobHelpers
   def enqueued_jobs
     ActiveJob::Base.queue_adapter.enqueued_jobs
   end
+
+  def test_adapter?
+    ActiveJob::Base.queue_adapter.is_a?(ActiveJob::QueueAdapters::TestAdapter)
+  end
 end
 
 RSpec.configure do |config|
   config.include ActiveJobHelpers
-  config.before(:each, type: :integration) { clear_enqueued_jobs }
+
+  config.before(:each, type: :integration) { clear_enqueued_jobs if test_adapter? }
+
+  config.around(:each, :active_job_adapter) do |example|
+    adapter = ActiveJob::Base.queue_adapter
+    ActiveJob::Base.queue_adapter = example.metadata[:active_job_adapter]
+
+    example.run
+
+    ActiveJob::Base.queue_adapter = adapter
+  end
 end
