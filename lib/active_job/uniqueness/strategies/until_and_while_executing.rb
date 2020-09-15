@@ -12,7 +12,7 @@ module ActiveJob
         attr_reader :runtime_lock_ttl, :on_runtime_conflict
 
         def initialize(runtime_lock_ttl: nil, on_runtime_conflict: nil, **params)
-          super(params)
+          super(**params)
           @runtime_lock_ttl = runtime_lock_ttl.present? ? runtime_lock_ttl.to_i * 1000 : lock_ttl
           @on_runtime_conflict = on_runtime_conflict || on_conflict
         end
