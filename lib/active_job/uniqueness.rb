@@ -40,8 +40,8 @@ module ActiveJob
         @lock_manager ||= ActiveJob::Uniqueness::LockManager.new(config.redlock_servers, config.redlock_options)
       end
 
-      def unlock!(*args)
-        lock_manager.delete_locks(ActiveJob::Uniqueness::LockKey.new(*args).wildcard_key)
+      def unlock!(**args)
+        lock_manager.delete_locks(ActiveJob::Uniqueness::LockKey.new(**args).wildcard_key)
       end
 
       def test_mode!
