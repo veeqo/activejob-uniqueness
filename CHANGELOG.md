@@ -5,6 +5,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased](https://github.com/veeqo/activejob-uniqueness/compare/v0.1.3...HEAD)
 
+### Fixed
+- [#11](https://github.com/veeqo/activejob-uniqueness/pull/11) Fix deprecation warnings for ruby 2.7 by [@DanAndreasson](https://github.com/DanAndreasson)
+- [#13](https://github.com/veeqo/activejob-uniqueness/pull/13) Fix deprecation warnings for ruby 2.7
+
 ## [0.1.3](https://github.com/veeqo/activejob-uniqueness/compare/v0.1.2...v0.1.3) - 2020-08-17
 
 ### Fixed

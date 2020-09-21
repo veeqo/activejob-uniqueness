@@ -3,16 +3,16 @@
 require 'redis'
 
 module LocksHelpers
-  def cleanup_locks(*args)
-    ActiveJob::Uniqueness.unlock!(*args)
+  def cleanup_locks(**args)
+    ActiveJob::Uniqueness.unlock!(**args)
   end
 
-  def locks(*args)
-    Redis.current.keys(ActiveJob::Uniqueness::LockKey.new(*args).wildcard_key)
+  def locks(**args)
+    Redis.current.keys(ActiveJob::Uniqueness::LockKey.new(**args).wildcard_key)
   end
 
-  def locks_expirations(*args)
-    locks(*args).map { |key| Redis.current.ttl(key) }
+  def locks_expirations(**args)
+    locks(**args).map { |key| Redis.current.ttl(key) }
   end
 
   def set_lock(job_class, arguments:)
@@ -33,7 +33,7 @@ RSpec::Matchers.define :lock do |job_class|
     lock_params = { job_class_name: job_class.name }
     lock_params[:arguments] = @lock_arguments if @lock_arguments
 
-    expect { actual.call }.to change { locks(lock_params).count }.by(1)
+    expect { actual.call }.to change { locks(**lock_params).count }.by(1)
   end
 
   chain :by_args do |*lock_arguments|
@@ -52,7 +52,7 @@ RSpec::Matchers.define :unlock do |job_class|
     lock_params = { job_class_name: job_class.name }
     lock_params[:arguments] = @lock_arguments if @lock_arguments
 
-    expect { actual.call }.to change { locks(lock_params).count }.by(-1)
+    expect { actual.call }.to change { locks(**lock_params).count }.by(-1)
   end
 
   chain :by_args do |*lock_arguments|
