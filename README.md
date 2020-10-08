@@ -11,7 +11,13 @@ The gem allows to protect job uniqueness with next strategies:
 | `until_and_while_executing` | when **pushed** to the queue | when **processing starts**<br>a runtime lock is acquired to **prevent simultaneous jobs** |
 | `while_executing` | when **processing starts** | when the job is **processed**<br>with any result including an error |
 
-Inspired by [SidekiqUniqueJobs](https://github.com/mhenrixon/sidekiq-unique-jobs), uses [Redlock](https://github.com/leandromoreira/redlock-rb) under the hood, sponsored by [Veeqo](https://www.veeqo.com/).
+Inspired by [SidekiqUniqueJobs](https://github.com/mhenrixon/sidekiq-unique-jobs), uses [Redlock](https://github.com/leandromoreira/redlock-rb) under the hood.
+
+<p align="center">
+  <a href="https://www.veeqo.com/" title="Sponsored by Veeqo">
+    <img src="https://static.veeqo.com/assets/sponsored_by_veeqo.png" width="360" />
+  </a>
+</p>
 
 ## Installation
 
@@ -124,3 +130,9 @@ Bug reports and pull requests are welcome on GitHub at https://github.com/veeqo/
 ## License
 
 The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
+
+## About [Veeqo](https://www.veeqo.com)
+
+At Veeqo, our team of Engineers is on a mission to create a world-class Inventory and Shipping platform, built to the highest standards in best coding practices. We are a growing team, looking for other passionate developers to [join us](https://veeqo-ltd.breezy.hr/) on our journey. If you're looking for a career working for one of the most exciting tech companies in ecommerce, we want to hear from you.
+
+[Veeqo developers blog](https://devs.veeqo.com)
