@@ -12,6 +12,10 @@ appraise 'activejob-6.0.x' do
   gem 'activejob', '~> 6.0.3'
 end
 
+appraise 'activejob-6.1.x' do
+  gem 'rails', '~> 6.1.0'
+end
+
 appraise 'sidekiq-4.2.x' do
   gem 'sidekiq', '~> 4.2.10'
   gem 'activejob', '~> 4.2.11'
