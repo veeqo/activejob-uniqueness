@@ -12,6 +12,7 @@ gemfile:
   - gemfiles/activejob_4.2.x.gemfile
   - gemfiles/activejob_5.2.x.gemfile
   - gemfiles/activejob_6.0.x.gemfile
+  - gemfiles/activejob_6.1.x.gemfile
   - gemfiles/sidekiq_4.2.x.gemfile
   - gemfiles/sidekiq_5.2.x.gemfile
   - gemfiles/sidekiq_6.1.x.gemfile
