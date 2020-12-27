@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require 'active_support'
-require 'active_support/core_ext'
+require 'active_job'
 require 'redlock'
+
 require 'active_job/uniqueness/version'
 require 'active_job/uniqueness/errors'
 require 'active_job/uniqueness/log_subscriber'

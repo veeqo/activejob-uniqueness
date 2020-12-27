@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require 'bundler/setup'
-require 'active_job'
 require 'active_job/uniqueness'
 require 'pry-byebug'
 

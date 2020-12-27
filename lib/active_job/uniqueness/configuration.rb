@@ -11,7 +11,7 @@ module ActiveJob
     class Configuration
       include ActiveSupport::Configurable
 
-      config_accessor(:lock_ttl) { 1.day }
+      config_accessor(:lock_ttl) { 86_400 } # 1.day
       config_accessor(:lock_prefix) { 'activejob_uniqueness' }
       config_accessor(:on_conflict) { :raise }
       config_accessor(:redlock_servers) { [ENV.fetch('REDIS_URL', 'redis://localhost:6379')] }
