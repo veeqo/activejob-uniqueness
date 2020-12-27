@@ -14,10 +14,14 @@ module ActiveJob
       config_accessor(:lock_ttl) { 1.day }
       config_accessor(:lock_prefix) { 'activejob_uniqueness' }
       config_accessor(:on_conflict) { :raise }
-      config_accessor(:digest_method) { OpenSSL::Digest::MD5 }
       config_accessor(:redlock_servers) { [ENV.fetch('REDIS_URL', 'redis://localhost:6379')] }
       config_accessor(:redlock_options) { {} }
       config_accessor(:lock_strategies) { {} }
+
+      config_accessor(:digest_method) do
+        require 'openssl'
+        OpenSSL::Digest::MD5
+      end
 
       def on_conflict=(action)
         validate_on_conflict_action!(action)
