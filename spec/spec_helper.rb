@@ -5,17 +5,6 @@ require 'active_job'
 require 'active_job/uniqueness'
 require 'pry-byebug'
 
-ActiveJob::Base.queue_adapter = :test
-
-ActiveJob::Base.logger = ActiveSupport::TaggedLogging.new(Logger.new(nil))
-
-# ActiveJob 6.0 prints noizy deprecation warning
-ActiveJob::Base.return_false_on_aborted_enqueue = true if ActiveJob::VERSION::STRING.start_with?('6.0')
-
-ActiveJob::Uniqueness.configure do |c|
-  c.redlock_options = { redis_timeout: 0.01, retry_count: 0 } # no reason to wait in tests
-end
-
 Dir['./spec/support/**/*.rb'].sort.each { |f| require f }
 
 RSpec.configure do |config|
