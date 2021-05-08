@@ -8,14 +8,6 @@ require 'active_job/uniqueness/errors'
 require 'active_job/uniqueness/log_subscriber'
 require 'active_job/uniqueness/active_job_patch'
 
-begin
-  require 'sidekiq/api'
-rescue LoadError
-  # ¯\_(ツ)_/¯
-else
-  require 'active_job/uniqueness/sidekiq_patch'
-end
-
 module ActiveJob
   module Uniqueness
     extend ActiveSupport::Autoload
