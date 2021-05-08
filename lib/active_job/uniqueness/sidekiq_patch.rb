@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+require 'activejob/uniqueness'
+require 'sidekiq/api'
+
 module ActiveJob
   module Uniqueness
     def self.unlock_sidekiq_job!(job_data)

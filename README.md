@@ -27,6 +27,11 @@ Add the `activejob-uniqueness` gem to your Gemfile.
 gem 'activejob-uniqueness'
 ```
 
+If you want jobs unlocking for Sidekiq Web UI, require the patch explicitly. [**Queues cleanup becomes slower!**](#sidekiq-api-support)
+```ruby
+gem 'activejob-uniqueness', require: 'active_job/uniqueness/sidekiq_patch'
+```
+
 And run `bundle install` command.
 
 ## Configuration
@@ -169,9 +174,14 @@ bundle
 rake
 ```
 
-## Sidekiq adapter support
+## Sidekiq API support
 
-ActiveJob::Uniqueness patches Sidekiq API to unset locks on jobs cleanup. Starting Sidekiq 5.1 job death also triggers locks cleanup.
+ActiveJob::Uniqueness supports Sidekiq API to unset job locks on queues cleanup (e.g. via Sidekiq Web UI). Starting Sidekiq 5.1 job death also triggers locks cleanup.
+Take into account that **[big queues clanup becomes much slower](https://github.com/veeqo/activejob-uniqueness/issues/16)** because each job is being unlocked individually. In order to activate Sidekiq API patch require it explicitly in your Gemfile:
+
+```ruby
+gem 'activejob-uniqueness', require: 'active_job/uniqueness/sidekiq_patch'
+```
 
 ## Contributing
 

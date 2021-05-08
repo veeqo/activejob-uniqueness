@@ -1,8 +1,15 @@
 # frozen_string_literal: true
 
 require 'bundler/setup'
-require 'active_job/uniqueness'
 require 'pry-byebug'
+
+begin
+  require 'sidekiq/api'
+rescue LoadError
+  require 'active_job/uniqueness'
+else
+  require 'active_job/uniqueness/sidekiq_patch'
+end
 
 Dir['./spec/support/**/*.rb'].sort.each { |f| require f }
 

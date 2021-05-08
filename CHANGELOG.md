@@ -9,6 +9,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - [#22](https://github.com/veeqo/activejob-uniqueness/pull/22) Test with ruby 3.0.1
 
 ### Changed
+- [#20](https://github.com/veeqo/activejob-uniqueness/pull/20) **Breaking** Sidekiq patch is not applied automatically anymore
 - [#21](https://github.com/veeqo/activejob-uniqueness/pull/21) Migrate from Travis to Github Actions
 - [#24](https://github.com/veeqo/activejob-uniqueness/pull/24) The default value for `retry_count` of redlock is now 0
 
