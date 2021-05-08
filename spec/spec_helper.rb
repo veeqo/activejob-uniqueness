@@ -17,6 +17,12 @@ RSpec.configure do |config|
   config.mock_with :rspec do |mocks|
     mocks.verify_partial_doubles = true
   end
+
+  if defined?(Sidekiq)
+    config.filter_run_excluding(sidekiq: :job_death) if Gem::Version.new(Sidekiq::VERSION) < Gem::Version.new('5.1')
+  else
+    config.filter_run_excluding(:sidekiq)
+  end
 end
 
 RSpec::Matchers.define_negated_matcher :not_change, :change
