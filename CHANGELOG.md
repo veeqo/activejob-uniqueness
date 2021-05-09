@@ -3,7 +3,9 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
-## [Unreleased](https://github.com/veeqo/activejob-uniqueness/compare/v0.1.4...HEAD)
+## [Unreleased](https://github.com/veeqo/activejob-uniqueness/compare/v0.2.0...HEAD)
+
+## [0.2.0](https://github.com/veeqo/activejob-uniqueness/compare/v0.1.4...v0.2.0) - 2021-05-09
 
 ### Added
 - [#22](https://github.com/veeqo/activejob-uniqueness/pull/22) Test with ruby 3.0.1
