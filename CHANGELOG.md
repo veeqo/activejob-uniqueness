@@ -5,6 +5,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased](https://github.com/veeqo/activejob-uniqueness/compare/v0.1.4...HEAD)
 
+### Changed
+- [#21](https://github.com/veeqo/activejob-uniqueness/pull/21) Migrate from Travis to Github Actions
+
 ## [0.1.4](https://github.com/veeqo/activejob-uniqueness/compare/v0.1.3...v0.1.4) - 2020-09-22
 
 ### Fixed
