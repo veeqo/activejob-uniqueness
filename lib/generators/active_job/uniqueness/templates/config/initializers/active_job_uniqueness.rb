@@ -31,7 +31,7 @@ ActiveJob::Uniqueness.configure do |config|
   # Custom options for Redlock.
   # Read more at https://github.com/leandromoreira/redlock-rb#redlock-configuration
   #
-  # config.redlock_options = {}
+  # config.redlock_options = { retry_count: 0 }
 
   # Custom strategies.
   # config.lock_strategies = { my_strategy: MyStrategy }
