@@ -8,7 +8,7 @@ The gem allows to protect job uniqueness with next strategies:
 | `until_executing` | when **pushed** to the queue | when **processing starts** |
 | `until_executed` | when **pushed** to the queue | when the job is **processed successfully** |
 | `until_expired` | when **pushed** to the queue | when the lock is **expired** |
-| `until_and_while_executing` | when **pushed** to the queue | when **processing starts**<br>a runtime lock is acquired to **prevent simultaneous jobs** |
+| `until_and_while_executing` | when **pushed** to the queue | when **processing starts**<br>a runtime lock is acquired to **prevent simultaneous jobs**<br>*has extra options: `runtime_lock_ttl`, `on_runtime_conflict`* |
 | `while_executing` | when **processing starts** | when the job is **processed**<br>with any result including an error |
 
 Inspired by [SidekiqUniqueJobs](https://github.com/mhenrixon/sidekiq-unique-jobs), uses [Redlock](https://github.com/leandromoreira/redlock-rb) under the hood.
@@ -40,27 +40,83 @@ rails generate active_job:uniqueness:install
 
 ## Usage
 
-Define uniqueness strategy for your job via `unique` class method:
+
+### Make the job to be unique
+
+```ruby
+class MyJob < ActiveJob::Base
+  # new jobs with the same args will raise error until existing one is executed
+  unique :until_executed
+
+  def perform(args)
+    # work
+  end
+end
+```
+
+### Tune uniqueness settings per job
+
+```ruby
+class MyJob < ActiveJob::Base
+  # new jobs with the same args will be logged within 3 hours or until existing one is being executing
+  unique :until_executing, lock_ttl: 3.hours, on_conflict: :log
+
+  def perform(args)
+    # work
+  end
+end
+```
+
+You can set defaults globally with [the configuration](#configuration)
+
+### Control lock conflicts
+
+```ruby
+class MyJob < ActiveJob::Base
+  # Proc gets the job instance including its arguments
+  unique :until_executing, on_conflict: ->(job) { job.logger.info "Oops: #{job.arguments}" }
+
+  def perform(args)
+    # work
+  end
+end
+```
+
+### Control lock key arguments
 
 ```ruby
 class MyJob < ActiveJob::Base
   unique :until_executed
 
-  # Custom expiration:
-  # unique :until_executed, lock_ttl: 3.hours
+  def perform(foo, bar, baz)
+    # work
+  end
 
-  # Do not raise error on non unique jobs enqueuing:
-  # unique :until_executed, on_conflict: :log
-
-  # Handle conflict by custom Proc:
-  # unique :until_executed, on_conflict: ->(job) { job.logger.info 'Oops' }
-
-  # The :until_and_while_executing strategy supports extra attributes for a runtime lock:
-  # unique :until_and_while_executing runtime_lock_ttl: 10.minutes, on_runtime_conflict: :log
+  def lock_key_arguments
+    arguments.first(2) # baz is ignored
+  end
 end
 ```
 
-ActiveJob::Uniqueness allows to manually unlock jobs:
+### Control the lock key
+
+```ruby
+class MyJob < ActiveJob::Base
+  unique :until_executed
+
+  def perform(foo, bar, baz)
+    # work
+  end
+
+  def lock_key
+    'qux' # completely custom lock key
+  end
+end
+```
+
+### Unlock jobs manually
+
+The selected strategy automatically unlocks jobs, but in some cases (e.g. the queue is purged) it is handy to unlock jobs manually.
 
 ```ruby
 # Remove the lock for particular arguments:
@@ -97,7 +153,7 @@ ActiveJob::Uniqueness instruments `ActiveSupport::Notifications` with next event
 
 And then writes to `ActiveJob::Base.logger`.
 
-### ActiveJob prior to version `6.1` will always log `Enqueued MyJob (Job ID) ...` even if the callback chain was halted. [Details](https://github.com/rails/rails/pull/37830)
+**ActiveJob prior to version `6.1` will always log `Enqueued MyJob (Job ID) ...` even if the callback chain is halted. [Details](https://github.com/rails/rails/pull/37830)**
 
 ## Testing
 
@@ -111,12 +167,6 @@ Run tests with:
 ```sh
 bundle
 rake
-```
-
-Use [wwtd](https://github.com/grosser/wwtd) to run test matrix:
-```sh
-gem install wwtd
-wwtd
 ```
 
 ## Sidekiq adapter support
