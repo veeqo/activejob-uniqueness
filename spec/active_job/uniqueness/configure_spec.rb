@@ -7,7 +7,11 @@ describe ActiveJob::Uniqueness, '.configure' do
   before { allow(ActiveJob::Uniqueness).to receive(:config).and_return config }
 
   context 'when no configuration has been set' do
-    subject { described_class.configure {} }
+    subject do
+      described_class.configure do
+        # nothing
+      end
+    end
 
     it 'does not change the default configuration' do
       expect { subject }.to not_change { config.lock_ttl }.from(1.day)
@@ -21,8 +25,6 @@ describe ActiveJob::Uniqueness, '.configure' do
   end
 
   context 'when valid configuration has been set' do
-    class self::MyStrategy < ActiveJob::Uniqueness::Strategies::Base; end
-
     subject do
       described_class.configure do |c|
         c.lock_ttl = 2.hours
@@ -31,9 +33,11 @@ describe ActiveJob::Uniqueness, '.configure' do
         c.digest_method = OpenSSL::Digest::SHA1
         c.redlock_servers = [Redis.current]
         c.redlock_options = { redis_timeout: 0.01, retry_count: 2 }
-        c.lock_strategies = { my_strategy: self.class::MyStrategy }
+        c.lock_strategies = { my_strategy: my_strategy }
       end
     end
+
+    let(:my_strategy) { stub_strategy_class }
 
     it 'changes the confguration' do
       expect { subject }.to change { config.lock_ttl }.from(1.day).to(2.hours)
@@ -42,7 +46,7 @@ describe ActiveJob::Uniqueness, '.configure' do
                         .and change { config.digest_method }.from(OpenSSL::Digest::MD5).to(OpenSSL::Digest::SHA1)
                         .and change { config.redlock_servers }.from([redis_url]).to([Redis.current])
                         .and change { config.redlock_options }.from({ retry_count: 0 }).to({ redis_timeout: 0.01, retry_count: 2 })
-                        .and change { config.lock_strategies }.from({}).to({ my_strategy: self.class::MyStrategy })
+                        .and change { config.lock_strategies }.from({}).to({ my_strategy: my_strategy })
     end
   end
 

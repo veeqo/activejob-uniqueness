@@ -6,17 +6,17 @@ describe ':until_executed strategy', type: :integration do
   end
 
   describe 'performing' do
-    class self::Job < ActiveJob::Base
-      unique :until_executed
-
-      def perform(number1, number2)
-        number1 / number2
-      end
-    end
-
     subject { perform_enqueued_jobs }
 
-    let(:job_class) { self.class::Job }
+    let(:job_class) do
+      stub_active_job_class do
+        unique :until_executed
+
+        def perform(number1, number2)
+          number1 / number2
+        end
+      end
+    end
 
     before { job_class.perform_later(*arguments) }
 

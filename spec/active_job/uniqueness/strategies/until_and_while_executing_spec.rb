@@ -6,17 +6,17 @@ describe ':until_and_while_executing strategy', type: :integration do
   end
 
   describe 'processing' do
-    class self::Job < ActiveJob::Base
-      unique :until_and_while_executing
-
-      def perform(number1, number2)
-        number1 / number2
-      end
-    end
-
     subject { perform_enqueued_jobs }
 
-    let(:job_class) { self.class::Job }
+    let(:job_class) do
+      stub_active_job_class do
+        unique :until_and_while_executing
+
+        def perform(number1, number2)
+          number1 / number2
+        end
+      end
+    end
 
     before { job_class.perform_later(*arguments) }
 
@@ -96,8 +96,10 @@ describe ':until_and_while_executing strategy', type: :integration do
       end
 
       context 'when no options are given' do
-        class self::Job < ActiveJob::Base
-          unique :until_and_while_executing
+        let(:job_class) do
+          stub_active_job_class do
+            unique :until_and_while_executing
+          end
         end
 
         include_examples 'of a not unique job processing'
@@ -108,8 +110,10 @@ describe ':until_and_while_executing strategy', type: :integration do
       end
 
       context 'when on_conflict: :raise given' do
-        class self::Job < ActiveJob::Base
-          unique :until_and_while_executing, on_conflict: :raise
+        let(:job_class) do
+          stub_active_job_class do
+            unique :until_and_while_executing, on_conflict: :raise
+          end
         end
 
         include_examples 'of a not unique job processing'
@@ -120,8 +124,10 @@ describe ':until_and_while_executing strategy', type: :integration do
       end
 
       context 'when on_conflict: :log given' do
-        class self::Job < ActiveJob::Base
-          unique :until_and_while_executing, on_conflict: :log
+        let(:job_class) do
+          stub_active_job_class do
+            unique :until_and_while_executing, on_conflict: :log
+          end
         end
 
         include_examples 'of a not unique job processing'
@@ -132,8 +138,10 @@ describe ':until_and_while_executing strategy', type: :integration do
       end
 
       context 'when on_conflict: Proc given' do
-        class self::Job < ActiveJob::Base
-          unique :until_and_while_executing, on_conflict: ->(job) { job.logger.info('Oops') }
+        let(:job_class) do
+          stub_active_job_class do
+            unique :until_and_while_executing, on_conflict: ->(job) { job.logger.info('Oops') }
+          end
         end
 
         include_examples 'of a not unique job processing'
@@ -144,8 +152,10 @@ describe ':until_and_while_executing strategy', type: :integration do
       end
 
       context 'when on_runtime_conflict: :raise given' do
-        class self::Job < ActiveJob::Base
-          unique :until_and_while_executing, on_conflict: :log, on_runtime_conflict: :raise
+        let(:job_class) do
+          stub_active_job_class do
+            unique :until_and_while_executing, on_conflict: :log, on_runtime_conflict: :raise
+          end
         end
 
         include_examples 'of a not unique job processing'
@@ -156,8 +166,10 @@ describe ':until_and_while_executing strategy', type: :integration do
       end
 
       context 'when on_runtime_conflict: :log given' do
-        class self::Job < ActiveJob::Base
-          unique :until_and_while_executing, on_conflict: :raise, on_runtime_conflict: :log
+        let(:job_class) do
+          stub_active_job_class do
+            unique :until_and_while_executing, on_conflict: :raise, on_runtime_conflict: :log
+          end
         end
 
         include_examples 'of a not unique job processing'
@@ -168,8 +180,10 @@ describe ':until_and_while_executing strategy', type: :integration do
       end
 
       context 'when on_runtime_conflict: Proc given' do
-        class self::Job < ActiveJob::Base
-          unique :until_and_while_executing, on_conflict: :raise, on_runtime_conflict: ->(job) { job.logger.info('Oops') }
+        let(:job_class) do
+          stub_active_job_class do
+            unique :until_and_while_executing, on_conflict: :raise, on_runtime_conflict: ->(job) { job.logger.info('Oops') }
+          end
         end
 
         include_examples 'of a not unique job processing'

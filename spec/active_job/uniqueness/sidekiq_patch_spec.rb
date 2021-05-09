@@ -2,16 +2,16 @@
 
 describe 'Sidekiq patch', :sidekiq, type: :integration do
   shared_examples_for 'locks release' do
-    let(:sidekiq_worker) do
-      stub_const('MySidekiqWorker', Class.new { include Sidekiq::Worker })
-    end
+    let(:sidekiq_worker) { stub_sidekiq_class }
 
     after { Sidekiq::Queue.all.each(&:clear) }
 
     context 'when queue adapter is Sidekiq', active_job_adapter: :sidekiq do
       context 'when job class has unique strategy enabled' do
         let!(:activejob_worker) do
-          stub_const('MyActiveJob', Class.new(ActiveJob::Base) { unique :until_executed })
+          stub_active_job_class do
+            unique :until_executed
+          end
         end
 
         it 'releases the lock' do
@@ -21,7 +21,7 @@ describe 'Sidekiq patch', :sidekiq, type: :integration do
 
       context 'when job class has no unique strategy enabled' do
         let!(:activejob_worker) do
-          stub_const('MyActiveJob', Class.new(ActiveJob::Base))
+          stub_active_job_class
         end
 
         include_examples 'no unlock attempts'
@@ -31,7 +31,9 @@ describe 'Sidekiq patch', :sidekiq, type: :integration do
     context 'when queue adapter is not Sidekiq', active_job_adapter: :test do
       context 'when job class has unique strategy enabled' do
         let!(:activejob_worker) do
-          stub_const('MyActiveJob', Class.new(ActiveJob::Base) { unique :until_executed })
+          stub_active_job_class do
+            unique :until_executed
+          end
         end
 
         include_examples 'no unlock attempts'

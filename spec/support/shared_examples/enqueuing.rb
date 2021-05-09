@@ -6,7 +6,7 @@ shared_examples_for 'a strategy with unique jobs in the queue' do
 
     let(:arguments) { [1, 2] }
 
-    let(:job_class) { self.class::Job }
+    let(:job_class) { stub_active_job_class }
 
     context 'when enqueuing has succeed' do
       shared_examples 'of an enqueued and locked job' do
@@ -24,8 +24,6 @@ shared_examples_for 'a strategy with unique jobs in the queue' do
       end
 
       context 'when no custom lock_ttl is set' do
-        class self::Job < ActiveJob::Base; end
-
         before { job_class.unique strategy }
 
         include_examples 'of an enqueued and locked job'
@@ -37,8 +35,6 @@ shared_examples_for 'a strategy with unique jobs in the queue' do
       end
 
       context 'when custom lock_ttl is set' do
-        class self::Job < ActiveJob::Base; end
-
         before { job_class.unique strategy, lock_ttl: 3.hours }
 
         include_examples 'of an enqueued and locked job'
@@ -51,8 +47,6 @@ shared_examples_for 'a strategy with unique jobs in the queue' do
     end
 
     context 'when enqueuing has failed' do
-      class self::Job < ActiveJob::Base; end
-
       before do
         job_class.unique strategy
         allow_any_instance_of(ActiveJob::QueueAdapters::TestAdapter).to receive(:enqueue).and_raise(IOError)
@@ -89,8 +83,6 @@ shared_examples_for 'a strategy with unique jobs in the queue' do
       end
 
       context 'when no options given' do
-        class self::Job < ActiveJob::Base; end
-
         include_examples 'of no jobs enqueued'
 
         it 'raises a ActiveJob::Uniqueness::JobNotUnique error' do
@@ -99,8 +91,6 @@ shared_examples_for 'a strategy with unique jobs in the queue' do
       end
 
       context 'when on_conflict: :raise given' do
-        class self::Job < ActiveJob::Base; end
-
         before { job_class.unique strategy, on_conflict: :raise }
 
         include_examples 'of no jobs enqueued'
@@ -111,8 +101,6 @@ shared_examples_for 'a strategy with unique jobs in the queue' do
       end
 
       context 'when on_conflict: :log given' do
-        class self::Job < ActiveJob::Base; end
-
         before { job_class.unique strategy, on_conflict: :log }
 
         it 'logs the skipped job' do
@@ -121,8 +109,6 @@ shared_examples_for 'a strategy with unique jobs in the queue' do
       end
 
       context 'when on_conflict: Proc given' do
-        class self::Job < ActiveJob::Base; end
-
         before { job_class.unique strategy, on_conflict: ->(job) { job.logger.info('Oops') } }
 
         include_examples 'of no jobs enqueued'
@@ -141,25 +127,21 @@ shared_examples_for 'a strategy with non unique jobs in the queue' do
 
     let(:arguments) { [1, 2] }
 
-    let(:job_class) { self.class::Job }
+    let(:job_class) { stub_active_job_class }
 
     before { job_class.unique strategy }
 
     context 'when the lock does not exist' do
-      class self::Job < ActiveJob::Base; end
-
       it 'enqueues the job' do
         expect { subject }.to change { enqueued_jobs.count }.by(1)
       end
 
       it 'does not lock the job' do
-        expect { suppress(RuntimeError) { subject } }.not_to lock(self.class::Job)
+        expect { suppress(RuntimeError) { subject } }.not_to lock(job_class)
       end
     end
 
     context 'when the lock exists' do
-      class self::Job < ActiveJob::Base; end
-
       before { set_lock(job_class, arguments: arguments) }
 
       it 'enqueues the job' do
