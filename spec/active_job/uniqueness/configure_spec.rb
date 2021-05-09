@@ -2,6 +2,7 @@
 
 describe ActiveJob::Uniqueness, '.configure' do
   let(:config) { ActiveJob::Uniqueness::Configuration.new }
+  let(:redis_url) { ENV.fetch('REDIS_URL', 'redis://localhost:6379') }
 
   before { allow(ActiveJob::Uniqueness).to receive(:config).and_return config }
 
@@ -13,7 +14,7 @@ describe ActiveJob::Uniqueness, '.configure' do
                         .and not_change { config.lock_prefix }.from('activejob_uniqueness')
                         .and not_change { config.on_conflict }.from(:raise)
                         .and not_change { config.digest_method }.from(OpenSSL::Digest::MD5)
-                        .and not_change { config.redlock_servers }.from(['redis://localhost:6379'])
+                        .and not_change { config.redlock_servers }.from([redis_url])
                         .and not_change { config.redlock_options }.from({})
                         .and not_change { config.lock_strategies }.from({})
     end
@@ -39,7 +40,7 @@ describe ActiveJob::Uniqueness, '.configure' do
                         .and change { config.lock_prefix }.from('activejob_uniqueness').to('foobar')
                         .and change { config.on_conflict }.from(:raise).to(:log)
                         .and change { config.digest_method }.from(OpenSSL::Digest::MD5).to(OpenSSL::Digest::SHA1)
-                        .and change { config.redlock_servers }.from(['redis://localhost:6379']).to([Redis.current])
+                        .and change { config.redlock_servers }.from([redis_url]).to([Redis.current])
                         .and change { config.redlock_options }.from({}).to({ redis_timeout: 0.01, retry_count: 0 })
                         .and change { config.lock_strategies }.from({}).to({ my_strategy: self.class::MyStrategy })
     end
