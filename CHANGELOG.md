@@ -5,6 +5,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased](https://github.com/veeqo/activejob-uniqueness/compare/v0.1.4...HEAD)
 
+### Added
+- [#22](https://github.com/veeqo/activejob-uniqueness/pull/22) Test with ruby 3.0.1
+
 ### Changed
 - [#21](https://github.com/veeqo/activejob-uniqueness/pull/21) Migrate from Travis to Github Actions
 
