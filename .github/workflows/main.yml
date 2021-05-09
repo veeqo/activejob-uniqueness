@@ -1,0 +1,55 @@
+name: Main
+
+on: [push,pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    container: ruby:${{ matrix.ruby }}
+
+    services:
+      redis:
+        image: redis:alpine
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    strategy:
+      matrix:
+        ruby:
+          - 2.5.8
+          - 2.6.6
+          - 2.7.2
+        gemfile:
+          - gemfiles/activejob_4.2.x.gemfile
+          - gemfiles/activejob_5.2.x.gemfile
+          - gemfiles/activejob_6.0.x.gemfile
+          - gemfiles/activejob_6.1.x.gemfile
+          - gemfiles/sidekiq_4.2.x.gemfile
+          - gemfiles/sidekiq_5.2.x.gemfile
+          - gemfiles/sidekiq_6.1.x.gemfile
+        exclude:
+          - ruby: 2.7.2
+            gemfile: gemfiles/activejob_4.2.x.gemfile
+          - ruby: 2.7.2
+            gemfile: gemfiles/sidekiq_4.2.x.gemfile
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Install dependencies
+      env:
+        BUNDLE_GEMFILE: ${{ matrix.gemfile }}
+      run: |
+        gem install bundler -v '~> 2.2.15'
+        bundle install --jobs 4 --retry 3
+
+    - name: Run the default task
+      env:
+        BUNDLE_GEMFILE: ${{ matrix.gemfile }}
+        REDIS_URL: redis://redis
+      run: rake

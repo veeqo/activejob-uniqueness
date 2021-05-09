@@ -1,5 +1,5 @@
 # Job uniqueness for ActiveJob
-[![Build Status](https://travis-ci.com/veeqo/activejob-uniqueness.svg?branch=master)](https://travis-ci.com/veeqo/activejob-uniqueness) [![Gem Version](https://badge.fury.io/rb/activejob-uniqueness.svg)](https://badge.fury.io/rb/activejob-uniqueness)
+[![Build Status](https://github.com/veeqo/activejob-uniqueness/actions/workflows/main.yml/badge.svg?branch=main)](https://github.com/veeqo/activejob-uniqueness/actions/workflows/main.yml) [![Gem Version](https://badge.fury.io/rb/activejob-uniqueness.svg)](https://badge.fury.io/rb/activejob-uniqueness)
 
 The gem allows to protect job uniqueness with next strategies:
 
