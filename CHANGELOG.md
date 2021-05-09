@@ -10,6 +10,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Changed
 - [#21](https://github.com/veeqo/activejob-uniqueness/pull/21) Migrate from Travis to Github Actions
+- [#24](https://github.com/veeqo/activejob-uniqueness/pull/24) The default value for `retry_count` of redlock is now 0
 
 ## [0.1.4](https://github.com/veeqo/activejob-uniqueness/compare/v0.1.3...v0.1.4) - 2020-09-22
 

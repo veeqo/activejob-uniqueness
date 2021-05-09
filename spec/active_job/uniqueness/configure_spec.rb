@@ -15,7 +15,7 @@ describe ActiveJob::Uniqueness, '.configure' do
                         .and not_change { config.on_conflict }.from(:raise)
                         .and not_change { config.digest_method }.from(OpenSSL::Digest::MD5)
                         .and not_change { config.redlock_servers }.from([redis_url])
-                        .and not_change { config.redlock_options }.from({})
+                        .and not_change { config.redlock_options }.from({ retry_count: 0 })
                         .and not_change { config.lock_strategies }.from({})
     end
   end
@@ -30,7 +30,7 @@ describe ActiveJob::Uniqueness, '.configure' do
         c.on_conflict = :log
         c.digest_method = OpenSSL::Digest::SHA1
         c.redlock_servers = [Redis.current]
-        c.redlock_options = { redis_timeout: 0.01, retry_count: 0 }
+        c.redlock_options = { redis_timeout: 0.01, retry_count: 2 }
         c.lock_strategies = { my_strategy: self.class::MyStrategy }
       end
     end
@@ -41,7 +41,7 @@ describe ActiveJob::Uniqueness, '.configure' do
                         .and change { config.on_conflict }.from(:raise).to(:log)
                         .and change { config.digest_method }.from(OpenSSL::Digest::MD5).to(OpenSSL::Digest::SHA1)
                         .and change { config.redlock_servers }.from([redis_url]).to([Redis.current])
-                        .and change { config.redlock_options }.from({}).to({ redis_timeout: 0.01, retry_count: 0 })
+                        .and change { config.redlock_options }.from({ retry_count: 0 }).to({ redis_timeout: 0.01, retry_count: 2 })
                         .and change { config.lock_strategies }.from({}).to({ my_strategy: self.class::MyStrategy })
     end
   end
