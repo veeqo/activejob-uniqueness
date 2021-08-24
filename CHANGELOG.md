@@ -3,7 +3,9 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
-## [Unreleased](https://github.com/veeqo/activejob-uniqueness/compare/v0.2.0...HEAD)
+## [Unreleased](https://github.com/veeqo/activejob-uniqueness/compare/v0.2.1...HEAD)
+
+## [0.2.1](https://github.com/veeqo/activejob-uniqueness/compare/v0.2.0...v0.2.1) - 2021-08-24
 
 ### Added
 - [#30](https://github.com/veeqo/activejob-uniqueness/pull/30) Add Sidekiq::JobRecord support (reported by [@dwightwatson](https://github.com/dwightwatson))
