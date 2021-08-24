@@ -30,3 +30,8 @@ appraise 'sidekiq-6.1.x' do
   gem 'sidekiq', '~> 6.1.1'
   gem 'activejob', '>= 6.1.0'
 end
+
+appraise 'sidekiq-6.2.x' do
+  gem 'sidekiq', '~> 6.2.2'
+  gem 'activejob', '>= 6.1.0'
+end

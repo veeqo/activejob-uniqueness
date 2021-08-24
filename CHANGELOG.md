@@ -5,6 +5,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased](https://github.com/veeqo/activejob-uniqueness/compare/v0.2.0...HEAD)
 
+### Added
+- [#30](https://github.com/veeqo/activejob-uniqueness/pull/30) Add Sidekiq::JobRecord support (reported by [@dwightwatson](https://github.com/dwightwatson))
+
 ## [0.2.0](https://github.com/veeqo/activejob-uniqueness/compare/v0.1.4...v0.2.0) - 2021-05-09
 
 ### Added

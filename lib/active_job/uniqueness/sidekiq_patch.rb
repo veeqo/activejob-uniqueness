@@ -76,12 +76,21 @@ end
 
 Sidekiq::SortedEntry.prepend ActiveJob::Uniqueness::SidekiqPatch::SortedEntry
 Sidekiq::ScheduledSet.prepend ActiveJob::Uniqueness::SidekiqPatch::ScheduledSet
-Sidekiq::Job.prepend ActiveJob::Uniqueness::SidekiqPatch::Job
 Sidekiq::Queue.prepend ActiveJob::Uniqueness::SidekiqPatch::Queue
 Sidekiq::JobSet.prepend ActiveJob::Uniqueness::SidekiqPatch::JobSet
 
+sidekiq_version = Gem::Version.new(Sidekiq::VERSION)
+
+# Sidekiq 6.2.2 renames Sidekiq::Job to Sidekiq::JobRecord
+# https://github.com/mperham/sidekiq/issues/4955
+if sidekiq_version >= Gem::Version.new('6.2.2')
+  Sidekiq::JobRecord.prepend ActiveJob::Uniqueness::SidekiqPatch::Job
+else
+  Sidekiq::Job.prepend ActiveJob::Uniqueness::SidekiqPatch::Job
+end
+
 # Global death handlers are introduced in Sidekiq 5.1
 # https://github.com/mperham/sidekiq/blob/e7acb124fbeb0bece0a7c3d657c39a9cc18d72c6/Changes.md#510
-if Gem::Version.new(Sidekiq::VERSION) >= Gem::Version.new('5.1')
+if sidekiq_version >= Gem::Version.new('5.1')
   Sidekiq.death_handlers << ->(job, _ex) { ActiveJob::Uniqueness.unlock_sidekiq_job!(job) }
 end
