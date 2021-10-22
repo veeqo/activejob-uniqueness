@@ -9,12 +9,16 @@ module ActiveJob
       class UntilAndWhileExecuting < Base
         include LockingOnEnqueue
 
-        attr_reader :runtime_lock_ttl, :on_runtime_conflict
+        attr_reader :runtime_lock_key, :runtime_lock_ttl, :on_runtime_conflict
 
-        def initialize(runtime_lock_ttl: nil, on_runtime_conflict: nil, **params)
-          super(**params)
-          @runtime_lock_ttl = runtime_lock_ttl.present? ? runtime_lock_ttl.to_i * 1000 : lock_ttl
-          @on_runtime_conflict = on_runtime_conflict || on_conflict
+        def initialize(job:)
+          super
+          @runtime_lock_key = job.runtime_lock_key
+
+          runtime_lock_ttl_option = job.lock_options[:runtime_lock_ttl]
+          @runtime_lock_ttl = runtime_lock_ttl_option.present? ? runtime_lock_ttl_option.to_i * 1000 : lock_ttl
+
+          @on_runtime_conflict = job.lock_options[:on_runtime_conflict] || on_conflict
         end
 
         def before_perform
@@ -32,10 +36,6 @@ module ActiveJob
           block.call
         ensure
           unlock(resource: runtime_lock_key, event: :runtime_unlock) unless @job_aborted
-        end
-
-        def runtime_lock_key
-          [lock_key, 'runtime'].join(':')
         end
       end
     end

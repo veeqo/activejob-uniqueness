@@ -28,6 +28,14 @@ module ActiveJob
         ].join(':')
       end
 
+      # used only by :until_and_while_executing strategy
+      def runtime_lock_key
+        [
+          lock_key,
+          'runtime'
+        ].join(':')
+      end
+
       def wildcard_key
         [
           lock_prefix,
