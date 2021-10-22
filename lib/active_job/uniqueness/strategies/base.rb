@@ -13,10 +13,10 @@ module ActiveJob
 
         attr_reader :lock_key, :lock_ttl, :on_conflict, :job
 
-        def initialize(lock_key:, lock_ttl: nil, on_conflict: nil, job: nil)
-          @lock_key = lock_key
-          @lock_ttl = (lock_ttl || config.lock_ttl).to_i * 1000 # ms
-          @on_conflict = on_conflict || config.on_conflict
+        def initialize(job:)
+          @lock_key = job.lock_key
+          @lock_ttl = (job.lock_options[:lock_ttl] || config.lock_ttl).to_i * 1000 # ms
+          @on_conflict = job.lock_options[:on_conflict] || config.on_conflict
           @job = job
         end
 

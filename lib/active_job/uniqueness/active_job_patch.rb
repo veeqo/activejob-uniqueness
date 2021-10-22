@@ -55,7 +55,7 @@ module ActiveJob
       end
 
       def lock_strategy
-        @lock_strategy ||= lock_strategy_class.new(**lock_options.merge(lock_key: lock_key, job: self))
+        @lock_strategy ||= lock_strategy_class.new(job: self)
       end
 
       # Override in your job class if you want to customize arguments set for a digest.
@@ -64,11 +64,11 @@ module ActiveJob
       end
 
       # Override lock_key method in your job class if you want to build completely custom lock key.
-      delegate :lock_key, to: :lock_key_generator
+      delegate :lock_key, :runtime_lock_key, to: :lock_key_generator
 
       def lock_key_generator
-        ActiveJob::Uniqueness::LockKey.new job_class_name: self.class.name,
-                                           arguments: lock_key_arguments
+        @lock_key_generator ||= ActiveJob::Uniqueness::LockKey.new job_class_name: self.class.name,
+                                                                   arguments: lock_key_arguments
       end
     end
 

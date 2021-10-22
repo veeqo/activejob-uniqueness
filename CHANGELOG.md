@@ -5,6 +5,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased](https://github.com/veeqo/activejob-uniqueness/compare/v0.2.1...HEAD)
 
+### Added
+- [#32](https://github.com/veeqo/activejob-uniqueness/pull/32) Add ability to set a custom runtime lock key for `:until_and_while_executing` strategy
+
 ## [0.2.1](https://github.com/veeqo/activejob-uniqueness/compare/v0.2.0...v0.2.1) - 2021-08-24
 
 ### Added

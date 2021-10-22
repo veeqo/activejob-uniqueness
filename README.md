@@ -116,6 +116,10 @@ class MyJob < ActiveJob::Base
   def lock_key
     'qux' # completely custom lock key
   end
+
+  def runtime_lock_key
+    'quux' # completely custom runtime lock key for :until_and_while_executing
+  end
 end
 ```
 
