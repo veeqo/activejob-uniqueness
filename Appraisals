@@ -16,6 +16,10 @@ appraise 'activejob-6.1.x' do
   gem 'activejob', '~> 6.1.0'
 end
 
+appraise 'activejob-7.0.x' do
+  gem 'activejob', '~> 7.0.0'
+end
+
 appraise 'sidekiq-4.2.x' do
   gem 'sidekiq', '~> 4.2.10'
   gem 'activejob', '~> 4.2.11'
@@ -26,12 +30,12 @@ appraise 'sidekiq-5.2.x' do
   gem 'activejob', '~> 5.2.4'
 end
 
-appraise 'sidekiq-6.1.x' do
-  gem 'sidekiq', '~> 6.1.1'
-  gem 'activejob', '>= 6.1.0'
-end
-
 appraise 'sidekiq-6.2.x' do
   gem 'sidekiq', '~> 6.2.2'
-  gem 'activejob', '>= 6.1.0'
+  gem 'activejob', '~> 6.1.0'
+end
+
+appraise 'sidekiq-6.3.x' do
+  gem 'sidekiq', '~> 6.3.1'
+  gem 'activejob', '~> 7.0.0'
 end

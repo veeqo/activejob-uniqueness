@@ -21,30 +21,39 @@ jobs:
       matrix:
         ruby:
           - 2.5.9
-          - 2.6.7
-          - 2.7.3
-          - 3.0.1
+          - 2.6.9
+          - 2.7.5
+          - 3.0.3
         gemfile:
           - gemfiles/activejob_4.2.x.gemfile
           - gemfiles/activejob_5.2.x.gemfile
           - gemfiles/activejob_6.0.x.gemfile
           - gemfiles/activejob_6.1.x.gemfile
+          - gemfiles/activejob_7.0.x.gemfile
           - gemfiles/sidekiq_4.2.x.gemfile
           - gemfiles/sidekiq_5.2.x.gemfile
-          - gemfiles/sidekiq_6.1.x.gemfile
           - gemfiles/sidekiq_6.2.x.gemfile
+          - gemfiles/sidekiq_6.3.x.gemfile
         exclude:
-          - ruby: 2.7.2
+          - ruby: 2.5.9
+            gemfile: gemfiles/activejob_7.0.x.gemfile
+          - ruby: 2.5.9
+            gemfile: gemfiles/sidekiq_6.3.x.gemfile
+          - ruby: 2.6.9
+            gemfile: gemfiles/activejob_7.0.x.gemfile
+          - ruby: 2.6.9
+            gemfile: gemfiles/sidekiq_6.3.x.gemfile
+          - ruby: 2.7.5
             gemfile: gemfiles/activejob_4.2.x.gemfile
-          - ruby: 2.7.2
+          - ruby: 2.7.5
             gemfile: gemfiles/sidekiq_4.2.x.gemfile
-          - ruby: 3.0.1
+          - ruby: 3.0.3
             gemfile: gemfiles/activejob_4.2.x.gemfile
-          - ruby: 3.0.1
+          - ruby: 3.0.3
             gemfile: gemfiles/activejob_5.2.x.gemfile
-          - ruby: 3.0.1
+          - ruby: 3.0.3
             gemfile: gemfiles/sidekiq_5.2.x.gemfile
-          - ruby: 3.0.1
+          - ruby: 3.0.3
             gemfile: gemfiles/sidekiq_4.2.x.gemfile
 
     steps:
