@@ -24,6 +24,7 @@ jobs:
           - 2.6.9
           - 2.7.5
           - 3.0.3
+          - 3.1.0
         gemfile:
           - gemfiles/activejob_4.2.x.gemfile
           - gemfiles/activejob_5.2.x.gemfile
@@ -52,9 +53,19 @@ jobs:
           - ruby: 3.0.3
             gemfile: gemfiles/activejob_5.2.x.gemfile
           - ruby: 3.0.3
-            gemfile: gemfiles/sidekiq_5.2.x.gemfile
-          - ruby: 3.0.3
             gemfile: gemfiles/sidekiq_4.2.x.gemfile
+          - ruby: 3.0.3
+            gemfile: gemfiles/sidekiq_5.2.x.gemfile
+          - ruby: 3.1.0
+            gemfile: gemfiles/activejob_4.2.x.gemfile
+          - ruby: 3.1.0
+            gemfile: gemfiles/activejob_5.2.x.gemfile
+          - ruby: 3.1.0
+            gemfile: gemfiles/activejob_6.0.x.gemfile
+          - ruby: 3.1.0
+            gemfile: gemfiles/sidekiq_4.2.x.gemfile
+          - ruby: 3.1.0
+            gemfile: gemfiles/sidekiq_5.2.x.gemfile
 
     steps:
     - name: Checkout code
