@@ -181,7 +181,7 @@ rake
 ## Sidekiq API support
 
 ActiveJob::Uniqueness supports Sidekiq API to unset job locks on queues cleanup (e.g. via Sidekiq Web UI). Starting Sidekiq 5.1 job death also triggers locks cleanup.
-Take into account that **[big queues clanup becomes much slower](https://github.com/veeqo/activejob-uniqueness/issues/16)** because each job is being unlocked individually. In order to activate Sidekiq API patch require it explicitly in your Gemfile:
+Take into account that **[big queues cleanup becomes much slower](https://github.com/veeqo/activejob-uniqueness/issues/16)** because each job is being unlocked individually. In order to activate Sidekiq API patch require it explicitly in your Gemfile:
 
 ```ruby
 gem 'activejob-uniqueness', require: 'active_job/uniqueness/sidekiq_patch'
