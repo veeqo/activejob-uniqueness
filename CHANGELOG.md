@@ -9,7 +9,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Added
 - [#36](https://github.com/veeqo/activejob-uniqueness/pull/36) Support ActiveJob/Rails 7.0
-- [#37](https://github.com/veeqo/activejob-uniqueness/pull/37) Add Ruby 3.1 to CI by [@petergoldstein]
+- [#37](https://github.com/veeqo/activejob-uniqueness/pull/37) Add Ruby 3.1 to CI by [@petergoldstein](https://github.com/petergoldstein)
 
 ## [0.2.2](https://github.com/veeqo/activejob-uniqueness/compare/v0.2.1...v0.2.2) - 2021-10-22
 
