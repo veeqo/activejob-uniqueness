@@ -15,7 +15,7 @@ ActiveJob::Uniqueness.configure do |config|
   # Allowed values are
   #   :raise - raises ActiveJob::Uniqueness::JobNotUnique
   #   :log - instruments ActiveSupport::Notifications and logs event to the ActiveJob::Logger
-  #   proc - custom Proc. For example, ->(job) { job.logger.info('Oops') }
+  #   proc - custom Proc. For example, ->(job) { job.logger.info("Job already in queue: #{job.class.name} #{job.arguments.inspect} (#{job.job_id})") }
   #
   # config.on_conflict = :raise
 
