@@ -5,6 +5,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased](https://github.com/veeqo/activejob-uniqueness/compare/v0.2.3...HEAD)
 
+### Added
+- [#43](https://github.com/veeqo/activejob-uniqueness/pull/43) Run rubocop on Github Actions
+
 ### Changed
 - [#42](https://github.com/veeqo/activejob-uniqueness/pull/42) Actualize rubies and gems for tests
 
