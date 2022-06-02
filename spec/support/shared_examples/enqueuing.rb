@@ -11,7 +11,7 @@ shared_examples_for 'a strategy with unique jobs in the queue' do
     context 'when enqueuing has succeed' do
       shared_examples 'of an enqueued and locked job' do
         it 'enqueues the job' do
-          expect { subject }.to change { enqueued_jobs.count }.by(1)
+          expect { subject }.to change(enqueued_jobs, :count).by(1)
         end
 
         it 'locks the job' do
@@ -74,11 +74,11 @@ shared_examples_for 'a strategy with unique jobs in the queue' do
 
       shared_examples 'of no jobs enqueued' do
         it 'does not enqueue the job' do
-          expect { suppress(ActiveJob::Uniqueness::JobNotUnique) { subject } }.not_to change { enqueued_jobs.count }
+          expect { suppress(ActiveJob::Uniqueness::JobNotUnique) { subject } }.not_to change(enqueued_jobs, :count)
         end
 
         it 'does not remove the existing lock' do
-          expect { suppress(ActiveJob::Uniqueness::JobNotUnique) { subject } }.not_to change { locks.count }
+          expect { suppress(ActiveJob::Uniqueness::JobNotUnique) { subject } }.not_to change(locks, :count)
         end
       end
 
@@ -133,7 +133,7 @@ shared_examples_for 'a strategy with non unique jobs in the queue' do
 
     context 'when the lock does not exist' do
       it 'enqueues the job' do
-        expect { subject }.to change { enqueued_jobs.count }.by(1)
+        expect { subject }.to change(enqueued_jobs, :count).by(1)
       end
 
       it 'does not lock the job' do
@@ -145,7 +145,7 @@ shared_examples_for 'a strategy with non unique jobs in the queue' do
       before { set_lock(job_class, arguments: arguments) }
 
       it 'enqueues the job' do
-        expect { subject }.to change { enqueued_jobs.count }.by(1)
+        expect { subject }.to change(enqueued_jobs, :count).by(1)
       end
 
       it 'does not unlock the job' do

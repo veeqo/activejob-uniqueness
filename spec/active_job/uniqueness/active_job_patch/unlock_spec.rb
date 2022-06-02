@@ -21,28 +21,28 @@ describe ActiveJob::Uniqueness::ActiveJobPatch, '.unlock!', type: :integration d
 
   shared_examples 'of other job classes' do
     it 'does not unlock jobs of other job classes' do
-      expect { subject }.not_to change { locks(job_class_name: 'MyAnotherJob').count }
+      expect { unlock! }.not_to change { locks(job_class_name: 'MyAnotherJob').count }
     end
   end
 
   context 'when no params given' do
-    subject { job_class.unlock! }
+    subject(:unlock!) { job_class.unlock! }
 
     it 'unlocks all jobs of the job class' do
-      expect { subject }.to change { locks(job_class_name: 'MyJob').count }.by(-2)
+      expect { unlock! }.to change { locks(job_class_name: 'MyJob').count }.by(-2)
     end
 
     include_examples 'of other job classes'
   end
 
   context 'when arguments given' do
-    subject { job_class.unlock!(*arguments) }
+    subject(:unlock!) { job_class.unlock!(*arguments) }
 
     context 'when there are matching locks for arguments' do
       let(:arguments) { [2, 1] }
 
       it 'unlocks matching jobs' do
-        expect { subject }.to change { locks(job_class_name: 'MyJob').count }.by(-1)
+        expect { unlock! }.to change { locks(job_class_name: 'MyJob').count }.by(-1)
       end
 
       include_examples 'of other job classes'
@@ -52,7 +52,7 @@ describe ActiveJob::Uniqueness::ActiveJobPatch, '.unlock!', type: :integration d
       let(:arguments) { [1, 3] }
 
       it 'does not unlock jobs of the job class' do
-        expect { subject }.not_to change { locks(job_class_name: 'MyJob').count }
+        expect { unlock! }.not_to change { locks(job_class_name: 'MyJob').count }
       end
 
       include_examples 'of other job classes'

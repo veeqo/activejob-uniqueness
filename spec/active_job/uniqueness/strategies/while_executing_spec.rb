@@ -6,7 +6,7 @@ describe ':while_executing strategy', type: :integration do
   end
 
   describe 'processing' do
-    subject { perform_enqueued_jobs }
+    subject(:process) { perform_enqueued_jobs }
 
     let(:job_class) do
       stub_active_job_class do
@@ -24,15 +24,15 @@ describe ':while_executing strategy', type: :integration do
       let(:arguments) { [1, 0] }
 
       it 'does not persist the runtime lock' do
-        expect { suppress(ZeroDivisionError) { subject } }.not_to lock(job_class)
+        expect { suppress(ZeroDivisionError) { process } }.not_to lock(job_class)
       end
 
       it 'logs the runtime lock event' do
-        expect { suppress(ZeroDivisionError) { subject } }.to log(/Locked runtime/)
+        expect { suppress(ZeroDivisionError) { process } }.to log(/Locked runtime/)
       end
 
       it 'logs the runtime unlock event' do
-        expect { suppress(ZeroDivisionError) { subject } }.to log(/Unlocked runtime/)
+        expect { suppress(ZeroDivisionError) { process } }.to log(/Unlocked runtime/)
       end
     end
 
@@ -40,15 +40,15 @@ describe ':while_executing strategy', type: :integration do
       let(:arguments) { [1, 1] }
 
       it 'does not persist the lock' do
-        expect { subject }.not_to lock(job_class)
+        expect { process }.not_to lock(job_class)
       end
 
       it 'logs the runtime lock event' do
-        expect { subject }.to log(/Locked/)
+        expect { process }.to log(/Locked/)
       end
 
       it 'logs the runtime unlock event' do
-        expect { subject }.to log(/Unlocked/)
+        expect { process }.to log(/Unlocked/)
       end
     end
 
@@ -59,19 +59,19 @@ describe ':while_executing strategy', type: :integration do
 
       shared_examples 'of a not unique job processing' do
         it 'does not release the existing runtime lock' do
-          expect { suppress(ActiveJob::Uniqueness::JobNotUnique) { subject } }.not_to unlock(job_class).by_args(*arguments)
+          expect { suppress(ActiveJob::Uniqueness::JobNotUnique) { process } }.not_to unlock(job_class).by_args(*arguments)
         end
 
         it 'does not log the runtime lock event' do
-          expect { suppress(ActiveJob::Uniqueness::JobNotUnique) { subject } }.not_to log(/Locked runtime/)
+          expect { suppress(ActiveJob::Uniqueness::JobNotUnique) { process } }.not_to log(/Locked runtime/)
         end
 
         it 'does not log the runtime unlock event' do
-          expect { suppress(ActiveJob::Uniqueness::JobNotUnique) { subject } }.not_to log(/Unlocked runtime/)
+          expect { suppress(ActiveJob::Uniqueness::JobNotUnique) { process } }.not_to log(/Unlocked runtime/)
         end
 
         it 'does not remove the existing lock' do
-          expect { suppress(ActiveJob::Uniqueness::JobNotUnique) { subject } }.not_to change { locks.count }
+          expect { suppress(ActiveJob::Uniqueness::JobNotUnique) { process } }.not_to change(locks, :count)
         end
       end
 
@@ -85,7 +85,7 @@ describe ':while_executing strategy', type: :integration do
         include_examples 'of a not unique job processing'
 
         it 'raises ActiveJob::Uniqueness::JobNotUnique' do
-          expect { subject }.to raise_error(ActiveJob::Uniqueness::JobNotUnique, /Not unique/)
+          expect { process }.to raise_error(ActiveJob::Uniqueness::JobNotUnique, /Not unique/)
         end
       end
 
@@ -99,7 +99,7 @@ describe ':while_executing strategy', type: :integration do
         include_examples 'of a not unique job processing'
 
         it 'raises ActiveJob::Uniqueness::JobNotUnique' do
-          expect { subject }.to raise_error(ActiveJob::Uniqueness::JobNotUnique, /Not unique runtime/)
+          expect { process }.to raise_error(ActiveJob::Uniqueness::JobNotUnique, /Not unique runtime/)
         end
       end
 
@@ -113,7 +113,7 @@ describe ':while_executing strategy', type: :integration do
         include_examples 'of a not unique job processing'
 
         it 'logs the skipped job' do
-          expect { subject }.to log(/Not unique/)
+          expect { process }.to log(/Not unique/)
         end
       end
 
@@ -127,7 +127,7 @@ describe ':while_executing strategy', type: :integration do
         include_examples 'of a not unique job processing'
 
         it 'calls the Proc' do
-          expect { subject }.to log(/Oops/)
+          expect { process }.to log(/Oops/)
         end
       end
     end
@@ -149,7 +149,7 @@ describe ':while_executing strategy', type: :integration do
         end
       end
 
-      it 'locks the job with the default lock key' do
+      it 'locks the job with the default lock key', :aggregate_failures do
         job.lock_strategy.around_perform lambda {
           expect(locks.size).to eq 1
           expect(locks.first).to match(/\Aactivejob_uniqueness:my_job:[^:]+\z/)
@@ -172,7 +172,7 @@ describe ':while_executing strategy', type: :integration do
         end
       end
 
-      it 'locks the job with the custom lock key' do
+      it 'locks the job with the custom lock key', :aggregate_failures do
         job.lock_strategy.around_perform lambda {
           expect(locks.size).to eq 1
           expect(locks.first).to eq 'activejob_uniqueness:whatever'

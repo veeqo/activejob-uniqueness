@@ -6,7 +6,7 @@ describe ':until_expired strategy', type: :integration do
   end
 
   describe 'performing' do
-    subject { perform_enqueued_jobs }
+    subject(:process) { perform_enqueued_jobs }
 
     let(:job_class) do
       stub_active_job_class do
@@ -24,11 +24,11 @@ describe ':until_expired strategy', type: :integration do
       let(:arguments) { [1, 0] }
 
       it 'does not release the lock' do
-        expect { suppress(ZeroDivisionError) { subject } }.not_to unlock(job_class).by_args(*arguments)
+        expect { suppress(ZeroDivisionError) { process } }.not_to unlock(job_class).by_args(*arguments)
       end
 
       it 'does not log the unlock event' do
-        expect { suppress(ZeroDivisionError) { subject } }.not_to log(/Unlocked/)
+        expect { suppress(ZeroDivisionError) { process } }.not_to log(/Unlocked/)
       end
     end
 
@@ -36,11 +36,11 @@ describe ':until_expired strategy', type: :integration do
       let(:arguments) { [1, 1] }
 
       it 'does not release the lock' do
-        expect { subject }.not_to unlock(job_class).by_args(*arguments)
+        expect { process }.not_to unlock(job_class).by_args(*arguments)
       end
 
       it 'does not log the unlock event' do
-        expect { subject }.not_to log(/Unlocked/)
+        expect { process }.not_to log(/Unlocked/)
       end
     end
   end
@@ -61,7 +61,7 @@ describe ':until_expired strategy', type: :integration do
         end
       end
 
-      it 'locks the job with the default lock key' do
+      it 'locks the job with the default lock key', :aggregate_failures do
         expect(locks.size).to eq 1
         expect(locks.first).to match(/\Aactivejob_uniqueness:my_job:[^:]+\z/)
       end
@@ -82,7 +82,7 @@ describe ':until_expired strategy', type: :integration do
         end
       end
 
-      it 'locks the job with the custom lock key' do
+      it 'locks the job with the custom lock key', :aggregate_failures do
         expect(locks.size).to eq 1
         expect(locks.first).to eq 'activejob_uniqueness:whatever'
       end

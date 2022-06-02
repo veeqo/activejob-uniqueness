@@ -5,103 +5,123 @@ describe ActiveJob::Uniqueness::ActiveJobPatch, '.unique' do
 
   context 'when an custom strategy is given' do
     context 'when matching custom strategy is configured' do
-      subject { job_class.unique :custom, foo: 'bar' }
+      subject(:make_job_unique) { job_class.unique :custom, foo: 'bar' }
 
       let(:custom_strategy) { stub_strategy_class('MyCustomStrategy') }
 
       before { allow(ActiveJob::Uniqueness.config).to receive(:lock_strategies).and_return({ custom: custom_strategy }) }
 
-      it 'sets proper values for lock variables' do
-        expect { subject }.to change { job_class.lock_strategy_class }.from(nil).to(custom_strategy)
-                          .and change { job_class.lock_options }.from(nil).to({ foo: 'bar' })
+      it 'sets proper values for lock variables', :aggregate_failures do
+        make_job_unique
+
+        expect(job_class.lock_strategy_class).to eq(custom_strategy)
+        expect(job_class.lock_options).to eq({ foo: 'bar' })
       end
     end
 
-    context 'whem no matching custom strategy is configured' do
-      subject { job_class.unique :string }
+    context 'when no matching custom strategy is configured' do
+      subject(:make_job_unique) { job_class.unique :string }
 
       it 'raises error ActiveJob::Uniqueness::StrategyNotFound' do
-        expect { subject }.to raise_error(ActiveJob::Uniqueness::StrategyNotFound, "Strategy 'string' is not found. Is it declared in the configuration?")
+        expect { make_job_unique }.to raise_error(ActiveJob::Uniqueness::StrategyNotFound, "Strategy 'string' is not found. Is it declared in the configuration?")
       end
     end
   end
 
   context 'when no options given' do
-    subject { job_class.unique :until_executed }
+    subject(:make_job_unique) { job_class.unique :until_executed }
 
-    it 'sets proper values for lock variables' do
-      expect { subject }.to change { job_class.lock_strategy_class }.from(nil).to(ActiveJob::Uniqueness::Strategies::UntilExecuted)
-                        .and change { job_class.lock_options }.from(nil).to({})
+    it 'sets proper values for lock variables', :aggregate_failures do
+      make_job_unique
+
+      expect(job_class.lock_strategy_class).to eq(ActiveJob::Uniqueness::Strategies::UntilExecuted)
+      expect(job_class.lock_options).to eq({})
     end
   end
 
   context 'when on_conflict: :log action is given' do
-    subject { job_class.unique :until_executed, on_conflict: :log }
+    subject(:make_job_unique) { job_class.unique :until_executed, on_conflict: :log }
 
-    it 'sets proper values for lock variables' do
-      expect { subject }.to change { job_class.lock_strategy_class }.from(nil).to(ActiveJob::Uniqueness::Strategies::UntilExecuted)
-                        .and change { job_class.lock_options }.from(nil).to({ on_conflict: :log })
+    it 'sets proper values for lock variables', :aggregate_failures do
+      make_job_unique
+
+      expect(job_class.lock_strategy_class).to eq(ActiveJob::Uniqueness::Strategies::UntilExecuted)
+      expect(job_class.lock_options).to eq({ on_conflict: :log })
     end
   end
 
   context 'when on_conflict: :raise action is given' do
-    subject { job_class.unique :until_executed, on_conflict: :raise }
+    subject(:make_job_unique) { job_class.unique :until_executed, on_conflict: :raise }
 
-    it 'sets proper values for lock variables' do
-      expect { subject }.to change { job_class.lock_strategy_class }.from(nil).to(ActiveJob::Uniqueness::Strategies::UntilExecuted)
-                        .and change { job_class.lock_options }.from(nil).to({ on_conflict: :raise })
+    it 'sets proper values for lock variables', :aggregate_failures do
+      make_job_unique
+
+      expect(job_class.lock_strategy_class).to eq(ActiveJob::Uniqueness::Strategies::UntilExecuted)
+      expect(job_class.lock_options).to eq({ on_conflict: :raise })
     end
   end
 
   context 'when on_conflict: Proc action is given' do
-    subject { job_class.unique :until_executed, on_conflict: ->(job) { job.logger.info('Oops') } }
+    subject(:make_job_unique) { job_class.unique :until_executed, on_conflict: custom_proc }
 
-    it 'sets proper values for lock variables' do
-      expect { subject }.to change { job_class.lock_strategy_class }.from(nil).to(ActiveJob::Uniqueness::Strategies::UntilExecuted)
-                        .and change { job_class.lock_options }.from(nil).to({ on_conflict: Proc })
+    let(:custom_proc) { ->(job) { job.logger.info('Oops') } }
+
+    it 'sets proper values for lock variables', :aggregate_failures do
+      make_job_unique
+
+      expect(job_class.lock_strategy_class).to eq(ActiveJob::Uniqueness::Strategies::UntilExecuted)
+      expect(job_class.lock_options).to eq({ on_conflict: custom_proc })
     end
   end
 
   context 'when invalid on_conflict is given' do
-    subject { job_class.unique :until_executed, on_conflict: :panic }
+    subject(:make_job_unique) { job_class.unique :until_executed, on_conflict: :panic }
 
     it 'raises InvalidOnConflictAction error' do
-      expect { subject }.to raise_error(ActiveJob::Uniqueness::InvalidOnConflictAction, "Unexpected 'panic' action on conflict")
+      expect { make_job_unique }.to raise_error(ActiveJob::Uniqueness::InvalidOnConflictAction, "Unexpected 'panic' action on conflict")
     end
   end
 
   context 'when on_runtime_conflict: :log action is given' do
-    subject { job_class.unique :until_executed, on_runtime_conflict: :log }
+    subject(:make_job_unique) { job_class.unique :until_executed, on_runtime_conflict: :log }
 
-    it 'sets proper values for lock variables' do
-      expect { subject }.to change { job_class.lock_strategy_class }.from(nil).to(ActiveJob::Uniqueness::Strategies::UntilExecuted)
-                        .and change { job_class.lock_options }.from(nil).to({ on_runtime_conflict: :log })
+    it 'sets proper values for lock variables', :aggregate_failures do
+      make_job_unique
+
+      expect(job_class.lock_strategy_class).to eq(ActiveJob::Uniqueness::Strategies::UntilExecuted)
+      expect(job_class.lock_options).to eq({ on_runtime_conflict: :log })
     end
   end
 
   context 'when on_runtime_conflict: :raise action is given' do
-    subject { job_class.unique :until_executed, on_runtime_conflict: :raise }
+    subject(:make_job_unique) { job_class.unique :until_executed, on_runtime_conflict: :raise }
 
-    it 'sets proper values for lock variables' do
-      expect { subject }.to change { job_class.lock_strategy_class }.from(nil).to(ActiveJob::Uniqueness::Strategies::UntilExecuted)
-                        .and change { job_class.lock_options }.from(nil).to({ on_runtime_conflict: :raise })
+    it 'sets proper values for lock variables', :aggregate_failures do
+      make_job_unique
+
+      expect(job_class.lock_strategy_class).to eq(ActiveJob::Uniqueness::Strategies::UntilExecuted)
+      expect(job_class.lock_options).to eq({ on_runtime_conflict: :raise })
     end
   end
 
   context 'when on_runtime_conflict: Proc action is given' do
-    subject { job_class.unique :until_executed, on_runtime_conflict: ->(job) { job.logger.info('Oops') } }
+    subject(:make_job_unique) { job_class.unique :until_executed, on_runtime_conflict: custom_proc }
 
-    it 'sets proper values for lock variables' do
-      expect { subject }.to change { job_class.lock_strategy_class }.from(nil).to(ActiveJob::Uniqueness::Strategies::UntilExecuted)
-                        .and change { job_class.lock_options }.from(nil).to({ on_runtime_conflict: Proc })
+    let(:custom_proc) { ->(job) { job.logger.info('Oops') } }
+
+    it 'sets proper values for lock variables', :aggregate_failures do
+      make_job_unique
+
+      expect(job_class.lock_strategy_class).to eq(ActiveJob::Uniqueness::Strategies::UntilExecuted)
+      expect(job_class.lock_options).to eq({ on_runtime_conflict: custom_proc })
     end
   end
 
   context 'when invalid on_runtime_conflict is given' do
-    subject { job_class.unique :until_executed, on_runtime_conflict: :panic }
+    subject(:make_job_unique) { job_class.unique :until_executed, on_runtime_conflict: :panic }
 
     it 'raises InvalidOnConflictAction error' do
-      expect { subject }.to raise_error(ActiveJob::Uniqueness::InvalidOnConflictAction, "Unexpected 'panic' action on conflict")
+      expect { make_job_unique }.to raise_error(ActiveJob::Uniqueness::InvalidOnConflictAction, "Unexpected 'panic' action on conflict")
     end
   end
 
@@ -119,11 +139,11 @@ describe ActiveJob::Uniqueness::ActiveJobPatch, '.unique' do
     end
 
     it 'does not impact lock_strategy_class of not inherited classes' do
-      expect(not_inherited_job_class.lock_strategy_class).to eq(nil)
+      expect(not_inherited_job_class.lock_strategy_class).to be_nil
     end
 
     it 'does not impact lock_options of not inherited classes' do
-      expect(not_inherited_job_class.lock_options).to eq(nil)
+      expect(not_inherited_job_class.lock_options).to be_nil
     end
   end
 end
