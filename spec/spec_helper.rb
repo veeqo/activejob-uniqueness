@@ -2,6 +2,7 @@
 
 require 'bundler/setup'
 require 'pry-byebug'
+require 'active_support/core_ext/kernel/reporting'
 
 begin
   require 'sidekiq/api'
