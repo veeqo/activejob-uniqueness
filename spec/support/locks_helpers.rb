@@ -11,6 +11,10 @@ module LocksHelpers
     redis.keys(ActiveJob::Uniqueness::LockKey.new(**args).wildcard_key)
   end
 
+  def locks_count
+    locks.count
+  end
+
   def locks_expirations(**args)
     locks(**args).map { |key| redis.ttl(key) }
   end

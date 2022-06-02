@@ -113,17 +113,6 @@ describe 'Sidekiq patch', :sidekiq, type: :integration do
     include_examples 'locks release'
   end
 
-  describe 'job delete' do
-    subject { Sidekiq::Queue.new('default').each(&:delete) }
-
-    before do
-      sidekiq_worker.perform_async(123)
-      activejob_worker.perform_later(321)
-    end
-
-    include_examples 'locks release'
-  end
-
   describe 'job death', sidekiq: :job_death do
     subject do
       Sidekiq::Queue.new('default').each do |job|

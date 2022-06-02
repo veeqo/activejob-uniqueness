@@ -3,7 +3,7 @@
 require 'active_support/log_subscriber'
 
 module ActiveJob
-  class LogSubscriber < ActiveSupport::LogSubscriber #:nodoc:
+  class LogSubscriber < ActiveSupport::LogSubscriber # :nodoc:
     def lock(event)
       job = event.payload[:job]
       resource = event.payload[:resource]
@@ -66,8 +66,7 @@ module ActiveJob
 
     def args_info(job)
       if job.arguments.any? && log_arguments?(job)
-        ' with arguments: ' +
-          job.arguments.map { |arg| format(arg).inspect }.join(', ')
+        " with arguments: #{job.arguments.map { |arg| format(arg).inspect }.join(', ')}"
       else
         ''
       end

@@ -9,7 +9,7 @@ module ActiveJob
       # Unlocks a resource by resource only.
       def delete_lock(resource)
         @servers.each do |server|
-          server.instance_variable_get(:'@redis').with do |conn|
+          server.instance_variable_get(:@redis).with do |conn|
             conn.del resource
           end
         end
@@ -20,7 +20,7 @@ module ActiveJob
       # Unlocks multiple resources by key wildcard.
       def delete_locks(wildcard)
         @servers.each do |server|
-          server.instance_variable_get(:'@redis').with do |conn|
+          server.instance_variable_get(:@redis).with do |conn|
             conn.scan_each(match: wildcard).each { |key| conn.del key }
           end
         end

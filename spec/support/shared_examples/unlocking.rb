@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 shared_examples_for 'no unlock attempts' do
-  it 'does not try to unset any locks' do
+  it 'does not try to unset any locks', :aggregate_failures do
     allow(ActiveJob::Uniqueness.lock_manager).to receive(:delete_locks)
     allow(ActiveJob::Uniqueness.lock_manager).to receive(:delete_lock)
 

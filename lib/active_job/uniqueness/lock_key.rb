@@ -40,7 +40,7 @@ module ActiveJob
         [
           lock_prefix,
           normalized_job_class_name,
-          arguments.any? ? arguments_key_part + '*' : '*'
+          arguments.any? ? "#{arguments_key_part}*" : '*'
         ].compact.join(':')
       end
 

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module RedisHelpers
   def redis
     @redis ||= Redis.new
