@@ -1,4 +1,7 @@
+require: rubocop-rspec
+
 AllCops:
+  TargetRubyVersion: 2.5
   NewCops: enable
   Exclude:
     - gemfiles/**/*
@@ -7,6 +10,7 @@ Layout/LineLength:
   Max: 120
   Exclude:
     - spec/**/*
+    - lib/generators/active_job/uniqueness/templates/config/initializers/active_job_uniqueness.rb
 
 Layout/MultilineMethodCallIndentation:
   Exclude:
@@ -15,6 +19,10 @@ Layout/MultilineMethodCallIndentation:
 Lint/AmbiguousBlockAssociation:
   Exclude:
     - spec/**/*
+
+Lint/EmptyBlock:
+  Exclude:
+    - spec/active_job/uniqueness/sidekiq_patch_spec.rb
 
 Metrics/AbcSize:
   Exclude:
@@ -41,3 +49,19 @@ Style/Documentation:
 
 Style/RescueModifier:
   Enabled: false
+
+RSpec/NestedGroups:
+  Max: 4
+
+RSpec/ExampleLength:
+  Enabled: false
+
+RSpec/DescribeClass:
+  Enabled: false
+
+RSpec/AnyInstance:
+  Enabled: false
+
+RSpec/LetSetup:
+  Exclude:
+    - spec/active_job/uniqueness/sidekiq_patch_spec.rb
