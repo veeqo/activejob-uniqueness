@@ -31,7 +31,7 @@ describe ActiveJob::Uniqueness, '.configure' do
         c.lock_prefix = 'foobar'
         c.on_conflict = :log
         c.digest_method = OpenSSL::Digest::SHA1
-        c.redlock_servers = [Redis.current]
+        c.redlock_servers = [redis]
         c.redlock_options = { redis_timeout: 0.01, retry_count: 2 }
         c.lock_strategies = { my_strategy: my_strategy }
       end
@@ -44,7 +44,7 @@ describe ActiveJob::Uniqueness, '.configure' do
                         .and change { config.lock_prefix }.from('activejob_uniqueness').to('foobar')
                         .and change { config.on_conflict }.from(:raise).to(:log)
                         .and change { config.digest_method }.from(OpenSSL::Digest::MD5).to(OpenSSL::Digest::SHA1)
-                        .and change { config.redlock_servers }.from([redis_url]).to([Redis.current])
+                        .and change { config.redlock_servers }.from([redis_url]).to([redis])
                         .and change { config.redlock_options }.from({ retry_count: 0 }).to({ redis_timeout: 0.01, retry_count: 2 })
                         .and change { config.lock_strategies }.from({}).to({ my_strategy: my_strategy })
     end
