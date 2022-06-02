@@ -21,51 +21,50 @@ jobs:
       matrix:
         ruby:
           - 2.5.9
-          - 2.6.9
-          - 2.7.5
-          - 3.0.3
-          - 3.1.0
+          - 2.6.10
+          - 2.7.6
+          - 3.0.4
+          - 3.1.2
         gemfile:
           - gemfiles/activejob_4.2.x.gemfile
           - gemfiles/activejob_5.2.x.gemfile
           - gemfiles/activejob_6.0.x.gemfile
           - gemfiles/activejob_6.1.x.gemfile
           - gemfiles/activejob_7.0.x.gemfile
-          - gemfiles/sidekiq_4.2.x.gemfile
-          - gemfiles/sidekiq_5.2.x.gemfile
-          - gemfiles/sidekiq_6.2.x.gemfile
-          - gemfiles/sidekiq_6.3.x.gemfile
+          - gemfiles/sidekiq_4.x.gemfile
+          - gemfiles/sidekiq_5.x.gemfile
+          - gemfiles/sidekiq_6.x.gemfile
         exclude:
           - ruby: 2.5.9
             gemfile: gemfiles/activejob_7.0.x.gemfile
           - ruby: 2.5.9
-            gemfile: gemfiles/sidekiq_6.3.x.gemfile
-          - ruby: 2.6.9
+            gemfile: gemfiles/sidekiq_6.x.gemfile
+          - ruby: 2.6.10
             gemfile: gemfiles/activejob_7.0.x.gemfile
-          - ruby: 2.6.9
-            gemfile: gemfiles/sidekiq_6.3.x.gemfile
-          - ruby: 2.7.5
+          - ruby: 2.6.10
+            gemfile: gemfiles/sidekiq_6.x.gemfile
+          - ruby: 2.7.6
             gemfile: gemfiles/activejob_4.2.x.gemfile
-          - ruby: 2.7.5
-            gemfile: gemfiles/sidekiq_4.2.x.gemfile
-          - ruby: 3.0.3
+          - ruby: 2.7.6
+            gemfile: gemfiles/sidekiq_4.x.gemfile
+          - ruby: 3.0.4
             gemfile: gemfiles/activejob_4.2.x.gemfile
-          - ruby: 3.0.3
+          - ruby: 3.0.4
             gemfile: gemfiles/activejob_5.2.x.gemfile
-          - ruby: 3.0.3
-            gemfile: gemfiles/sidekiq_4.2.x.gemfile
-          - ruby: 3.0.3
-            gemfile: gemfiles/sidekiq_5.2.x.gemfile
-          - ruby: 3.1.0
+          - ruby: 3.0.4
+            gemfile: gemfiles/sidekiq_4.x.gemfile
+          - ruby: 3.0.4
+            gemfile: gemfiles/sidekiq_5.x.gemfile
+          - ruby: 3.1.2
             gemfile: gemfiles/activejob_4.2.x.gemfile
-          - ruby: 3.1.0
+          - ruby: 3.1.2
             gemfile: gemfiles/activejob_5.2.x.gemfile
-          - ruby: 3.1.0
+          - ruby: 3.1.2
             gemfile: gemfiles/activejob_6.0.x.gemfile
-          - ruby: 3.1.0
-            gemfile: gemfiles/sidekiq_4.2.x.gemfile
-          - ruby: 3.1.0
-            gemfile: gemfiles/sidekiq_5.2.x.gemfile
+          - ruby: 3.1.2
+            gemfile: gemfiles/sidekiq_4.x.gemfile
+          - ruby: 3.1.2
+            gemfile: gemfiles/sidekiq_5.x.gemfile
 
     steps:
     - name: Checkout code
