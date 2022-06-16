@@ -38,6 +38,10 @@ module ActiveJob
       def test_mode!
         @lock_manager = ActiveJob::Uniqueness::TestLockManager.new
       end
+
+      def reset_manager!
+        @lock_manager = nil
+      end
     end
   end
 end
