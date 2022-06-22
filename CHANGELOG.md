@@ -3,10 +3,14 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
-## [Unreleased](https://github.com/veeqo/activejob-uniqueness/compare/v0.2.3...HEAD)
+## [Unreleased](https://github.com/veeqo/activejob-uniqueness/compare/v0.2.4...HEAD)
+
+
+## [0.2.4](https://github.com/veeqo/activejob-uniqueness/compare/v0.2.3...v0.2.4) - 2022-06-22
 
 ### Added
 - [#43](https://github.com/veeqo/activejob-uniqueness/pull/43) Run rubocop on Github Actions
+- [#44](https://github.com/veeqo/activejob-uniqueness/pull/44) Add ActiveJob::Uniqueness.test_mode! method to reset lock manager by [@akostadinov](https://github.com/akostadinov)
 
 ### Changed
 - [#42](https://github.com/veeqo/activejob-uniqueness/pull/42) Actualize rubies and gems for tests
