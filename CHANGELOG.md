@@ -10,7 +10,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Added
 - [#43](https://github.com/veeqo/activejob-uniqueness/pull/43) Run rubocop on Github Actions
-- [#44](https://github.com/veeqo/activejob-uniqueness/pull/44) Add ActiveJob::Uniqueness.test_mode! method to reset lock manager by [@akostadinov](https://github.com/akostadinov)
+- [#44](https://github.com/veeqo/activejob-uniqueness/pull/44) Add ActiveJob::Uniqueness.reset_manager! method to reset lock manager by [@akostadinov](https://github.com/akostadinov)
 
 ### Changed
 - [#42](https://github.com/veeqo/activejob-uniqueness/pull/42) Actualize rubies and gems for tests
