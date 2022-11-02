@@ -93,7 +93,7 @@ end
 # https://github.com/mperham/sidekiq/blob/e7acb124fbeb0bece0a7c3d657c39a9cc18d72c6/Changes.md#510
 if sidekiq_version >= Gem::Version.new('7.0')
   Sidekiq.configure_server do |config|
-    config.death_handlers << ->(job, ex) { ActiveJob::Uniqueness.unlock_sidekiq_job!(job) }
+    config.death_handlers << ->(job, _ex) { ActiveJob::Uniqueness.unlock_sidekiq_job!(job) }
   end
 elsif sidekiq_version >= Gem::Version.new('5.1')
   Sidekiq.death_handlers << ->(job, _ex) { ActiveJob::Uniqueness.unlock_sidekiq_job!(job) }
