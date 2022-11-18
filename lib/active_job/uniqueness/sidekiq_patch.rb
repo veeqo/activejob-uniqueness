@@ -91,6 +91,8 @@ end
 
 # Global death handlers are introduced in Sidekiq 5.1
 # https://github.com/mperham/sidekiq/blob/e7acb124fbeb0bece0a7c3d657c39a9cc18d72c6/Changes.md#510
-if sidekiq_version >= Gem::Version.new('5.1')
+if sidekiq_version >= Gem::Version.new('7.0')
+  Sidekiq.default_configuration.death_handlers << ->(job, _ex) { ActiveJob::Uniqueness.unlock_sidekiq_job!(job) }
+elsif sidekiq_version >= Gem::Version.new('5.1')
   Sidekiq.death_handlers << ->(job, _ex) { ActiveJob::Uniqueness.unlock_sidekiq_job!(job) }
 end
