@@ -24,11 +24,27 @@ module ActiveJob
       end
 
       def config
-        @config ||= ActiveJob::Uniqueness::Configuration.new
+        return @config if defined?(@config)
+
+        @config = ActiveJob::Uniqueness::Configuration.new
       end
 
       def lock_manager
-        @lock_manager ||= ActiveJob::Uniqueness::LockManager.new(config.redlock_servers, config.redlock_options)
+        return @lock_manager if defined?(@lock_manager)
+
+        servers = if config.pool.present?
+                    [connection_pool]
+                  else
+                    config.redlock_servers
+                  end
+        @lock_manager = ActiveJob::Uniqueness::LockManager.new(servers, config.redlock_options)
+      end
+
+      def connection_pool
+        url = config.pool[:url] || ENV.fetch('REDIS_URL', 'redis://localhost:6379')
+        ConnectionPool.new(size: config.pool[:size] || 5, timeout: config.pool[:timeout] || 1) do
+          Redis.new(url: url)
+        end
       end
 
       def unlock!(**args)
@@ -40,7 +56,11 @@ module ActiveJob
       end
 
       def reset_manager!
-        @lock_manager = nil
+        remove_instance_variable(:@lock_manager)
+      end
+
+      def reset_config!
+        remove_instance_variable(:@config)
       end
     end
   end

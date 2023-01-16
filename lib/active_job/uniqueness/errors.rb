@@ -31,5 +31,21 @@ module ActiveJob
     # end
     #
     class InvalidOnConflictAction < Error; end
+
+    # Raised when pool is used, but gem is missing
+    class ConnectionPoolGemMissing < Error
+      MESSAGE = <<~MSG
+        activejob-uniqueness uses `connection_pool`
+
+        Please add gem to Gemfile:
+        ```
+        gem 'connection_pool'
+        ```
+      MSG
+
+      def initialize
+        super(MESSAGE)
+      end
+    end
   end
 end

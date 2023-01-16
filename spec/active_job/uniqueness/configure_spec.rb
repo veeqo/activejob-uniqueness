@@ -75,4 +75,32 @@ describe ActiveJob::Uniqueness, '.configure' do
       expect { configure }.to raise_error(ActiveJob::Uniqueness::InvalidOnConflictAction, "Unexpected 'panic' action on conflict")
     end
   end
+
+  context 'when pool has been set' do
+    subject(:configure) do
+      described_class.configure do |c|
+        c.pool = { name: 'My pool' }
+      end
+    end
+
+    it 'changes the confguration' do
+      expect { configure }.to change(config, :pool).from({}).to({ name: 'My pool' })
+    end
+  end
+
+  context 'when connection_pool gem is missing' do
+    subject(:configure) do
+      described_class.configure do |c|
+        c.pool = { size: 2 }
+      end
+    end
+
+    before do
+      allow_any_instance_of(ActiveJob::Uniqueness::Configuration).to receive(:require).and_raise(Gem::LoadError)
+    end
+
+    it 'raises ActiveJob::Uniqueness::ConnectionPoolGemMissing' do
+      expect { configure }.to raise_error(ActiveJob::Uniqueness::ConnectionPoolGemMissing, /activejob-uniqueness uses `connection_pool`.+Please add gem to Gemfile.+gem 'connection_pool'/m)
+    end
+  end
 end

@@ -17,6 +17,7 @@ module ActiveJob
       config_accessor(:redlock_servers) { [ENV.fetch('REDIS_URL', 'redis://localhost:6379')] }
       config_accessor(:redlock_options) { { retry_count: 0 } }
       config_accessor(:lock_strategies) { {} }
+      config_accessor(:pool) { {} }
 
       config_accessor(:digest_method) do
         require 'openssl'
@@ -29,10 +30,22 @@ module ActiveJob
         config.on_conflict = action
       end
 
+      def pool=(settings)
+        ensure_dependency_is_loaded!
+
+        config.pool = settings
+      end
+
       def validate_on_conflict_action!(action)
         return if action.nil? || %i[log raise].include?(action) || action.respond_to?(:call)
 
         raise ActiveJob::Uniqueness::InvalidOnConflictAction, "Unexpected '#{action}' action on conflict"
+      end
+
+      def ensure_dependency_is_loaded!
+        require 'connection_pool'
+      rescue Gem::LoadError
+        raise ActiveJob::Uniqueness::ConnectionPoolGemMissing
       end
     end
   end

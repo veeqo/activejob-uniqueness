@@ -28,6 +28,10 @@ ActiveJob::Uniqueness.configure do |config|
   #
   # config.redlock_servers = [ENV.fetch('REDIS_URL', 'redis://localhost:6379')]
 
+  # Connection pool configuration
+  #
+  # config.pool = { size: 5, timeout: 1, url: 'redis://localhost:6379' }
+
   # Custom options for Redlock.
   # Read more at https://github.com/leandromoreira/redlock-rb#redlock-configuration
   #
