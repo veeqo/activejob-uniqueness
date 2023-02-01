@@ -3,8 +3,18 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
-## [Unreleased](https://github.com/veeqo/activejob-uniqueness/compare/v0.2.4...HEAD)
+## [Unreleased](https://github.com/veeqo/activejob-uniqueness/compare/v0.2.5...HEAD)
 
+
+## [0.2.5](https://github.com/veeqo/activejob-uniqueness/compare/v0.2.4...v0.2.5) - 2023-02-01
+
+### Added
+- [#45](https://github.com/veeqo/activejob-uniqueness/pull/45) Add Dependabot for GitHub Actions by [@petergoldstein](https://github.com/petergoldstein)
+- [#51](https://github.com/veeqo/activejob-uniqueness/pull/51) Add support for Sidekiq 7 by [@dwightwatson](https://github.com/dwightwatson)
+- [#52](https://github.com/veeqo/activejob-uniqueness/pull/52) Add Ruby 3.2.0 to the CI matrix by [@petergoldstein](https://github.com/petergoldstein)
+
+### Changed
+- [#46](https://github.com/veeqo/activejob-uniqueness/pull/46) Fix a method name typo in CHANGELOG by [@y-yagi](https://github.com/y-yagi)
 
 ## [0.2.4](https://github.com/veeqo/activejob-uniqueness/compare/v0.2.3...v0.2.4) - 2022-06-22
 
