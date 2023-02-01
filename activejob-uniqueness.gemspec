@@ -33,7 +33,7 @@ Gem::Specification.new do |spec|
 
   spec.add_development_dependency 'appraisal', '~> 2.3.0'
   spec.add_development_dependency 'bundler', '>= 2.0'
-  spec.add_development_dependency 'pry-byebug'
+  spec.add_development_dependency 'pry-byebug', '> 3.6.0'
   spec.add_development_dependency 'rspec', '~> 3.0'
   spec.add_development_dependency 'rubocop', '~> 1.28'
   spec.add_development_dependency 'rubocop-rspec', '~> 2.10'
