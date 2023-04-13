@@ -2,7 +2,7 @@
 
 ActiveJob::Uniqueness.configure do |config|
   # Global default expiration for lock keys. Each job can define its own ttl via :lock_ttl option.
-  # Strategy :until_and_while_executing also accept :on_runtime_ttl option.
+  # Strategy :until_and_while_executing also accepts :on_runtime_ttl option.
   #
   # config.lock_ttl = 1.day
 
@@ -11,7 +11,7 @@ ActiveJob::Uniqueness.configure do |config|
   # config.lock_prefix = 'activejob_uniqueness'
 
   # Default action on lock conflict. Can be set per job.
-  # Stategy :until_and_while_executing also accept :on_runtime_conflict option.
+  # Strategy :until_and_while_executing also accepts :on_runtime_conflict option.
   # Allowed values are
   #   :raise - raises ActiveJob::Uniqueness::JobNotUnique
   #   :log - instruments ActiveSupport::Notifications and logs event to the ActiveJob::Logger
