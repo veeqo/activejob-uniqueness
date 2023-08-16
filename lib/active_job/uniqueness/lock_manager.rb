@@ -10,7 +10,7 @@ module ActiveJob
       def delete_lock(resource)
         @servers.each do |server|
           server.instance_variable_get(:@redis).with do |conn|
-            conn.del resource
+            conn.call('DEL', resource)
           end
         end
 
@@ -21,7 +21,7 @@ module ActiveJob
       def delete_locks(wildcard)
         @servers.each do |server|
           server.instance_variable_get(:@redis).with do |conn|
-            conn.scan_each(match: wildcard).each { |key| conn.del key }
+            conn.scan('MATCH', wildcard).each { |key| conn.call('DEL', key) }
           end
         end
 
