@@ -32,6 +32,7 @@ jobs:
           - gemfiles/activejob_6.0.x.gemfile
           - gemfiles/activejob_6.1.x.gemfile
           - gemfiles/activejob_7.0.x.gemfile
+          - gemfiles/activejob_7.1.x.gemfile
           - gemfiles/sidekiq_4.x.gemfile
           - gemfiles/sidekiq_5.x.gemfile
           - gemfiles/sidekiq_6.x.gemfile
