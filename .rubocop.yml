@@ -5,6 +5,7 @@ AllCops:
   NewCops: enable
   Exclude:
     - gemfiles/**/*
+    - activejob-uniqueness.gemspec
 
 Layout/LineLength:
   Max: 120

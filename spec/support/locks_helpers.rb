@@ -1,14 +1,12 @@
 # frozen_string_literal: true
 
-require 'redis'
-
 module LocksHelpers
   def cleanup_locks(**args)
     ActiveJob::Uniqueness.unlock!(**args)
   end
 
   def locks(**args)
-    redis.keys(ActiveJob::Uniqueness::LockKey.new(**args).wildcard_key)
+    redis.call('KEYS', ActiveJob::Uniqueness::LockKey.new(**args).wildcard_key)
   end
 
   def locks_count
@@ -16,7 +14,7 @@ module LocksHelpers
   end
 
   def locks_expirations(**args)
-    locks(**args).map { |key| redis.ttl(key) }
+    locks(**args).map { |key| redis.call('TTL', key) }
   end
 
   def set_lock(job_class, arguments:)
