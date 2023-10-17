@@ -20,6 +20,10 @@ appraise 'activejob-7.0.x' do
   gem 'activejob', '~> 7.0.3'
 end
 
+appraise 'activejob-7.1.x' do
+  gem 'activejob', '~> 7.1'
+end
+
 appraise 'sidekiq-4.x' do
   gem 'sidekiq', '~> 4.2'
   gem 'activejob', '~> 5.2'
