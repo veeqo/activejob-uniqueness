@@ -2,7 +2,7 @@
 
 module RedisHelpers
   def redis
-    @redis ||= Redis.new
+    @redis ||= RedisClient.new(url: ENV.fetch('REDIS_URL', 'redis://localhost:6379'))
   end
 end
 
