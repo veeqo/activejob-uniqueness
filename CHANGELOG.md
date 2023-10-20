@@ -5,6 +5,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased](https://github.com/veeqo/activejob-uniqueness/compare/v0.2.5...HEAD)
 
+### Added
+- [#66](https://github.com/veeqo/activejob-uniqueness/pull/66) Activejob 7.1 support by [@laurafeier](https://github.com/laurafeier)
+
+### Changed
+- [#57](https://github.com/veeqo/activejob-uniqueness/pull/57) Upgrade to Redlock 2 & use redis-client by [@bmulholland](https://github.com/bmulholland)
+
+### Removed
+- Support fo Redlock v1 is removed. Switching to `RedisClient` is [a breaking change of Redlock v2](https://github.com/leandromoreira/redlock-rb/blob/main/CHANGELOG.md#200---2023-02-09).
 
 ## [0.2.5](https://github.com/veeqo/activejob-uniqueness/compare/v0.2.4...v0.2.5) - 2023-02-01
 
