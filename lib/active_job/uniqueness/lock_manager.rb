@@ -9,7 +9,7 @@ module ActiveJob
       # Unlocks a resource by resource only.
       def delete_lock(resource)
         @servers.each do |server|
-          server.instance_variable_get(:@redis).with do |conn|
+          synced_redis_connection(server) do |conn|
             conn.call('DEL', resource)
           end
         end
@@ -20,12 +20,22 @@ module ActiveJob
       # Unlocks multiple resources by key wildcard.
       def delete_locks(wildcard)
         @servers.each do |server|
-          server.instance_variable_get(:@redis).with do |conn|
+          synced_redis_connection(server) do |conn|
             conn.scan('MATCH', wildcard).each { |key| conn.call('DEL', key) }
           end
         end
 
         true
+      end
+
+      private
+
+      def synced_redis_connection(server, &block)
+        if server.respond_to?(:synchronize)
+          server.synchronize(&block)
+        else
+          server.instance_variable_get(:@redis).with(&block)
+        end
       end
     end
   end
