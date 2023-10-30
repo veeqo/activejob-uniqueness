@@ -3,8 +3,13 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
-## [Unreleased](https://github.com/veeqo/activejob-uniqueness/compare/v0.3.0...HEAD)
+## [Unreleased](https://github.com/veeqo/activejob-uniqueness/compare/v0.3.1...HEAD)
 
+## [0.3.1](https://github.com/veeqo/activejob-uniqueness/compare/v0.3.0...v0.3.1) - 2023-10-30
+
+### Fixed
+
+- [#67](https://github.com/veeqo/activejob-uniqueness/pull/67) Random redis errors on delete_lock by [@laurafeier](https://github.com/laurafeier)
 
 ## [0.3.0](https://github.com/veeqo/activejob-uniqueness/compare/v0.2.5...v0.3.0) - 2023-10-20
 
