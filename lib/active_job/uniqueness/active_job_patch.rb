@@ -41,7 +41,9 @@ module ActiveJob
 
         private
 
-        delegate :validate_on_conflict_action!, :validate_on_redis_connection_error!, to: :'ActiveJob::Uniqueness.config'
+        delegate :validate_on_conflict_action!,
+                 :validate_on_redis_connection_error!,
+                 to: :'ActiveJob::Uniqueness.config'
       end
 
       included do

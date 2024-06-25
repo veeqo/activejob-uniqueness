@@ -25,8 +25,6 @@ module ActiveJob
           lock_manager.lock(resource, ttl).tap do |result|
             instrument(event, resource: resource, ttl: ttl) if result
           end
-        rescue RedisClient::ConnectionError => e
-          [:handle_redis_connection_error, e]
         end
 
         def unlock(resource:, event: :unlock)
@@ -59,17 +57,16 @@ module ActiveJob
 
         module LockingOnEnqueue
           def before_enqueue
+            return if lock(resource: lock_key, ttl: lock_ttl)
 
-            case lock(resource: lock_key, ttl: lock_ttl)
-            in [:handle_redis_connection_error, error]
-              handle_redis_connection_error(resource: lock_key, on_redis_connection_error: on_redis_connection_error, error: error)
-              abort_job
-            in nil | false
-              handle_conflict(resource: lock_key, on_conflict: on_conflict)
-              abort_job
-            else
-              return
-            end
+            handle_conflict(resource: lock_key, on_conflict: on_conflict)
+            abort_job
+          rescue RedisClient::ConnectionError => e
+            handle_redis_connection_error(
+              resource: lock_key, on_redis_connection_error:
+              on_redis_connection_error, error: e
+            )
+            abort_job
           end
 
           def around_enqueue(block)
@@ -98,10 +95,9 @@ module ActiveJob
 
         def handle_redis_connection_error(resource:, on_redis_connection_error:, error:)
           case on_redis_connection_error
-          when :raise then raise error
-          when nil then raise error
+          when :raise, nil then raise error
           else
-            on_redis_connection_error.call(job, resource:, error:)
+            on_redis_connection_error.call(job, resource: resource, error: error)
           end
         end
 

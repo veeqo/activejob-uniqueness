@@ -36,7 +36,6 @@ module ActiveJob
         raise ActiveJob::Uniqueness::InvalidOnConflictAction, "Unexpected '#{action}' action on conflict"
       end
 
-
       def on_redis_connection_error=(action)
         validate_on_redis_connection_error!(action)
 
@@ -44,7 +43,7 @@ module ActiveJob
       end
 
       def validate_on_redis_connection_error!(action)
-        return if action.nil? || :raise == action || action.respond_to?(:call)
+        return if action.nil? || action == :raise || action.respond_to?(:call)
 
         raise ActiveJob::Uniqueness::InvalidOnConflictAction, "Unexpected '#{action}' action on_redis_connection_error"
       end
