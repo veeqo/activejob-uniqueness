@@ -90,6 +90,16 @@ shared_examples_for 'a strategy with unique jobs in the queue' do
         end
       end
 
+      context 'when on_redis_connection_error: :raise given' do
+        before { job_class.unique strategy, on_redis_connection_error: :raise }
+
+        include_examples 'of no jobs enqueued'
+
+        it 'raises a RedisClient::ConnectionError error' do
+          expect { subject }.to raise_error RedisClient::ConnectionError
+        end
+      end
+
       context 'when on_redis_connection_error: Proc given' do
         before { job_class.unique strategy, on_redis_connection_error: ->(job, **_kwargs) { job.logger.info('Oops') } }
 

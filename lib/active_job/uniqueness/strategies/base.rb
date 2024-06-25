@@ -17,7 +17,7 @@ module ActiveJob
           @lock_key = job.lock_key
           @lock_ttl = (job.lock_options[:lock_ttl] || config.lock_ttl).to_i * 1000 # ms
           @on_conflict = job.lock_options[:on_conflict] || config.on_conflict
-          @on_redis_connection_error = job.lock_options[:on_redis_connection_error]
+          @on_redis_connection_error = job.lock_options[:on_redis_connection_error] || config.on_redis_connection_error
           @job = job
         end
 
@@ -97,9 +97,12 @@ module ActiveJob
         end
 
         def handle_redis_connection_error(resource:, on_redis_connection_error:, error:)
-          raise error unless on_redis_connection_error
-
-          on_redis_connection_error.call(job, resource:, error:)
+          case on_redis_connection_error
+          when :raise then raise error
+          when nil then raise error
+          else
+            on_redis_connection_error.call(job, resource:, error:)
+          end
         end
 
         def abort_job
