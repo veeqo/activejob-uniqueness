@@ -11,12 +11,13 @@ module ActiveJob
 
         delegate :lock_manager, :config, to: :'ActiveJob::Uniqueness'
 
-        attr_reader :lock_key, :lock_ttl, :on_conflict, :job
+        attr_reader :lock_key, :lock_ttl, :on_conflict, :on_redis_connection_error, :job
 
         def initialize(job:)
           @lock_key = job.lock_key
           @lock_ttl = (job.lock_options[:lock_ttl] || config.lock_ttl).to_i * 1000 # ms
           @on_conflict = job.lock_options[:on_conflict] || config.on_conflict
+          @on_redis_connection_error = job.lock_options[:on_redis_connection_error]
           @job = job
         end
 
@@ -24,6 +25,8 @@ module ActiveJob
           lock_manager.lock(resource, ttl).tap do |result|
             instrument(event, resource: resource, ttl: ttl) if result
           end
+        rescue RedisClient::ConnectionError => e
+          [:handle_redis_connection_error, e]
         end
 
         def unlock(resource:, event: :unlock)
@@ -56,10 +59,17 @@ module ActiveJob
 
         module LockingOnEnqueue
           def before_enqueue
-            return if lock(resource: lock_key, ttl: lock_ttl)
 
-            handle_conflict(resource: lock_key, on_conflict: on_conflict)
-            abort_job
+            case lock(resource: lock_key, ttl: lock_ttl)
+            in [:handle_redis_connection_error, error]
+              handle_redis_connection_error(resource: lock_key, on_redis_connection_error: on_redis_connection_error, error: error)
+              abort_job
+            in nil | false
+              handle_conflict(resource: lock_key, on_conflict: on_conflict)
+              abort_job
+            else
+              return
+            end
           end
 
           def around_enqueue(block)
@@ -84,6 +94,12 @@ module ActiveJob
           else
             on_conflict.call(job)
           end
+        end
+
+        def handle_redis_connection_error(resource:, on_redis_connection_error:, error:)
+          raise error unless on_redis_connection_error
+
+          on_redis_connection_error.call(job, resource:, error:)
         end
 
         def abort_job
