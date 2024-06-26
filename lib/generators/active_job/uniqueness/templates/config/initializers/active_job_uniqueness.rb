@@ -19,6 +19,13 @@ ActiveJob::Uniqueness.configure do |config|
   #
   # config.on_conflict = :raise
 
+  # Default action on redis connection error. Can be set per job.
+  # Allowed values are
+  #   :raise - raises ActiveJob::Uniqueness::JobNotUnique
+  #   proc - custom Proc. For example, ->(job, resource: _, error: _) { job.logger.info("Job already in queue: #{job.class.name} #{job.arguments.inspect} (#{job.job_id})") }
+  #
+  # config.on_conflict = :raise
+
   # Digest method for lock keys generating. Expected to have `hexdigest` class method.
   #
   # config.digest_method = OpenSSL::Digest::MD5
