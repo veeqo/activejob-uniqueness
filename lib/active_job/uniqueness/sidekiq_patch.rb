@@ -41,7 +41,7 @@ module ActiveJob
       module ScheduledSet
         def delete(score, job_id)
           entry = find_job(job_id)
-          ActiveJob::Uniqueness.unlock_sidekiq_job!(entry.item) if super(score, job_id)
+          ActiveJob::Uniqueness.unlock_sidekiq_job!(entry.item) if super(score, job_id) # rubocop:disable Style/SuperArguments
           entry
         end
       end
@@ -67,7 +67,7 @@ module ActiveJob
         end
 
         def delete_by_value(name, value)
-          ActiveJob::Uniqueness.unlock_sidekiq_job!(Sidekiq.load_json(value)) if super(name, value)
+          ActiveJob::Uniqueness.unlock_sidekiq_job!(Sidekiq.load_json(value)) if super(name, value) # rubocop:disable Style/SuperArguments
         end
       end
     end
