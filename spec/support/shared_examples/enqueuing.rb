@@ -65,6 +65,52 @@ shared_examples_for 'a strategy with unique jobs in the queue' do
       end
     end
 
+    context 'when locking fails due to RedisClient error' do
+      before do
+        job_class.unique strategy
+
+        allow_any_instance_of(ActiveJob::Uniqueness::LockManager).to receive(:lock).and_raise(RedisClient::ConnectionError)
+      end
+
+      shared_examples 'of no jobs enqueued' do
+        it 'does not enqueue the job' do
+          expect { suppress(RedisClient::ConnectionError) { subject } }.not_to change(enqueued_jobs, :count)
+        end
+
+        it 'does not remove the existing lock' do
+          expect { suppress(RedisClient::ConnectionError) { subject } }.not_to change(locks, :count)
+        end
+      end
+
+      context 'when no options given' do
+        include_examples 'of no jobs enqueued'
+
+        it 'raises a RedisClient::ConnectionError error' do
+          expect { subject }.to raise_error RedisClient::ConnectionError
+        end
+      end
+
+      context 'when on_redis_connection_error: :raise given' do
+        before { job_class.unique strategy, on_redis_connection_error: :raise }
+
+        include_examples 'of no jobs enqueued'
+
+        it 'raises a RedisClient::ConnectionError error' do
+          expect { subject }.to raise_error RedisClient::ConnectionError
+        end
+      end
+
+      context 'when on_redis_connection_error: Proc given' do
+        before { job_class.unique strategy, on_redis_connection_error: ->(job, **_kwargs) { job.logger.info('Oops') } }
+
+        include_examples 'of no jobs enqueued'
+
+        it 'calls the Proc' do
+          expect { subject }.to log(/Oops/)
+        end
+      end
+    end
+
     context 'when the lock exists' do
       before do
         job_class.unique strategy

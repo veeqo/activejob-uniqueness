@@ -27,6 +27,7 @@ module ActiveJob
         def unique(strategy, options = {})
           validate_on_conflict_action!(options[:on_conflict])
           validate_on_conflict_action!(options[:on_runtime_conflict])
+          validate_on_redis_connection_error!(options[:on_redis_connection_error])
 
           self.lock_strategy_class = ActiveJob::Uniqueness::Strategies.lookup(strategy)
           self.lock_options = options
@@ -40,7 +41,9 @@ module ActiveJob
 
         private
 
-        delegate :validate_on_conflict_action!, to: :'ActiveJob::Uniqueness.config'
+        delegate :validate_on_conflict_action!,
+                 :validate_on_redis_connection_error!,
+                 to: :'ActiveJob::Uniqueness.config'
       end
 
       included do
