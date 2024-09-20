@@ -68,4 +68,26 @@ describe ActiveJob::Uniqueness, '.unlock!', type: :integration do
       end
     end
   end
+
+  describe 'bulk deletion' do
+    subject(:unlock!) { described_class.unlock! }
+
+    let(:expected_initial_number_of_locks) { 1_103 } # 1_100 + 2 + 1
+    let(:expected_number_of_delete_commands) { 2 } # 1103 / 1000 (ActiveJob::Uniqueness::LockManager::DELETE_LOCKS_SCAN_COUNT)
+
+    before { 1_100.times.each { |i| job_class.perform_later(3, i) } }
+
+    it 'removes locks efficiently' do
+      expect { unlock! }.to change { locks_count }.from(expected_initial_number_of_locks).to(0)
+                        .and change { delete_commands_calls }.by(expected_number_of_delete_commands)
+    end
+
+    def delete_commands_calls
+      info = redis.call('INFO', 'commandstats')
+      del_stats = info.split("\n").find { |line| line.start_with?('cmdstat_del:') }
+      return 0 unless del_stats
+
+      del_stats.match(/cmdstat_del:calls=(\d+)/)[1].to_i
+    end
+  end
 end
