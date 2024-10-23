@@ -43,6 +43,19 @@ To override the defaults, create an initializer `config/initializers/active_job_
 rails generate active_job:uniqueness:install
 ```
 
+This gem relies on `redlock` for it's Redis connection, that means **it will not inherit global configuration of `Sidekiq`**. To configure the connection, you can use `config.redlock_servers`, for example to disable SSL verification for Redis/Key-Value cloud providers:
+
+```ruby
+ActiveJob::Uniqueness.configure do |config|
+  config.redlock_servers = [
+    RedisClient.new(
+      url: ENV['REDIS_URL'],
+      ssl_params: { verify_mode: OpenSSL::SSL::VERIFY_NONE }
+    )
+  ]
+end
+```
+
 ## Usage
 
 
