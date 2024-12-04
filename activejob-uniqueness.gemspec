@@ -28,7 +28,7 @@ Gem::Specification.new do |spec|
 
   spec.required_ruby_version = '>= 2.5'
 
-  spec.add_dependency 'activejob', '>= 4.2', '< 7.3'
+  spec.add_dependency 'activejob', '>= 4.2', '< 8.1'
   spec.add_dependency 'redlock', '>= 2.0', '< 3'
 
   spec.add_development_dependency 'appraisal', '~> 2.3.0'

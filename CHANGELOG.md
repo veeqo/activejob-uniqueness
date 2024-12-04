@@ -5,6 +5,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased](https://github.com/veeqo/activejob-uniqueness/compare/v0.3.2...HEAD)
 
+### Added
+
+- [#86](https://github.com/veeqo/activejob-uniqueness/pull/86) Add Rails 8.0 rc1 support by[@sharshenov](https://github.com/sharshenov)
+
 ## [0.3.2](https://github.com/veeqo/activejob-uniqueness/compare/v0.3.1...v0.3.2) - 2024-08-16
 
 ### Added

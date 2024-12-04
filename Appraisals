@@ -28,6 +28,10 @@ appraise 'activejob-7.2.x' do
   gem 'activejob', '~> 7.2'
 end
 
+appraise 'activejob-8.0.x' do
+  gem 'activejob', '>= 8.0.0.rc1', '< 8.1'
+end
+
 appraise 'sidekiq-4.x' do
   gem 'sidekiq', '~> 4.2'
   gem 'activejob', '~> 5.2'
