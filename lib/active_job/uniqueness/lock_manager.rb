@@ -17,11 +17,17 @@ module ActiveJob
         true
       end
 
+      DELETE_LOCKS_SCAN_COUNT = 1000
+
       # Unlocks multiple resources by key wildcard.
       def delete_locks(wildcard)
         @servers.each do |server|
           synced_redis_connection(server) do |conn|
-            conn.scan('MATCH', wildcard).each { |key| conn.call('DEL', key) }
+            cursor = 0
+            while cursor != '0'
+              cursor, keys = conn.call('SCAN', cursor, 'MATCH', wildcard, 'COUNT', DELETE_LOCKS_SCAN_COUNT)
+              conn.call('UNLINK', *keys) unless keys.empty?
+            end
           end
         end
 
