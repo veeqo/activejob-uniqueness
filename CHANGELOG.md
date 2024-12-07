@@ -8,6 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Added
 
 - [#86](https://github.com/veeqo/activejob-uniqueness/pull/86) Add Rails 8.0 rc1 support by[@sharshenov](https://github.com/sharshenov)
+- [#78](https://github.com/veeqo/activejob-uniqueness/pull/78) Add on_redis_connection_error config to adjust to new redlock behaviour by[@nduitz](https://github.com/nduitz)
 
 ### Changed
 - [#82](https://github.com/veeqo/activejob-uniqueness/pull/82) Optimize bulk unlocking [@sharshenov](https://github.com/sharshenov)
@@ -15,10 +16,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## [0.3.2](https://github.com/veeqo/activejob-uniqueness/compare/v0.3.1...v0.3.2) - 2024-08-16
 
 ### Added
-- [#80](https://github.com/veeqo/activejob-uniqueness/pull/80) Add rails 7.2 support by [viralpraxis]
+- [#80](https://github.com/veeqo/activejob-uniqueness/pull/80) Add rails 7.2 support by [@viralpraxis](https://github.com/viralpraxis)
 
 ### Changed
-- [#74](https://github.com/veeqo/activejob-uniqueness/pull/74) Fix log subscriber by [@shahidkhaliq]
+- [#74](https://github.com/veeqo/activejob-uniqueness/pull/74) Fix log subscriber by [@shahidkhaliq](https://github.com/shahidkhaliq)
 
 ## [0.3.1](https://github.com/veeqo/activejob-uniqueness/compare/v0.3.0...v0.3.1) - 2023-10-30
 
