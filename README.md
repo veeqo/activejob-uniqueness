@@ -87,6 +87,19 @@ class MyJob < ActiveJob::Base
 end
 ```
 
+### Control redis connection errors
+
+```ruby
+class MyJob < ActiveJob::Base
+  # Proc gets the job instance including its arguments, and as keyword arguments the resource(lock key) `resource` and the original error `error`
+  unique :until_executing, on_redis_connection_error: ->(job, resource: _, error: _) { job.logger.info "Oops: #{job.arguments}" }
+
+  def perform(args)
+    # work
+  end
+end
+```
+
 ### Control lock key arguments
 
 ```ruby

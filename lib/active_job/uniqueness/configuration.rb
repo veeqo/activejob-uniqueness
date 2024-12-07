@@ -14,6 +14,7 @@ module ActiveJob
       config_accessor(:lock_ttl) { 86_400 } # 1.day
       config_accessor(:lock_prefix) { 'activejob_uniqueness' }
       config_accessor(:on_conflict) { :raise }
+      config_accessor(:on_redis_connection_error) { :raise }
       config_accessor(:redlock_servers) { [ENV.fetch('REDIS_URL', 'redis://localhost:6379')] }
       config_accessor(:redlock_options) { { retry_count: 0 } }
       config_accessor(:lock_strategies) { {} }
@@ -33,6 +34,18 @@ module ActiveJob
         return if action.nil? || %i[log raise].include?(action) || action.respond_to?(:call)
 
         raise ActiveJob::Uniqueness::InvalidOnConflictAction, "Unexpected '#{action}' action on conflict"
+      end
+
+      def on_redis_connection_error=(action)
+        validate_on_redis_connection_error!(action)
+
+        config.on_redis_connection_error = action
+      end
+
+      def validate_on_redis_connection_error!(action)
+        return if action.nil? || action == :raise || action.respond_to?(:call)
+
+        raise ActiveJob::Uniqueness::InvalidOnConflictAction, "Unexpected '#{action}' action on_redis_connection_error"
       end
     end
   end

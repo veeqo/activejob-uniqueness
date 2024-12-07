@@ -11,12 +11,13 @@ module ActiveJob
 
         delegate :lock_manager, :config, to: :'ActiveJob::Uniqueness'
 
-        attr_reader :lock_key, :lock_ttl, :on_conflict, :job
+        attr_reader :lock_key, :lock_ttl, :on_conflict, :on_redis_connection_error, :job
 
         def initialize(job:)
           @lock_key = job.lock_key
           @lock_ttl = (job.lock_options[:lock_ttl] || config.lock_ttl).to_i * 1000 # ms
           @on_conflict = job.lock_options[:on_conflict] || config.on_conflict
+          @on_redis_connection_error = job.lock_options[:on_redis_connection_error] || config.on_redis_connection_error
           @job = job
         end
 
@@ -60,6 +61,12 @@ module ActiveJob
 
             handle_conflict(resource: lock_key, on_conflict: on_conflict)
             abort_job
+          rescue RedisClient::ConnectionError => e
+            handle_redis_connection_error(
+              resource: lock_key, on_redis_connection_error:
+              on_redis_connection_error, error: e
+            )
+            abort_job
           end
 
           def around_enqueue(block)
@@ -83,6 +90,14 @@ module ActiveJob
           when :raise then raise_not_unique_job_error(resource: resource, event: event)
           else
             on_conflict.call(job)
+          end
+        end
+
+        def handle_redis_connection_error(resource:, on_redis_connection_error:, error:)
+          case on_redis_connection_error
+          when :raise, nil then raise error
+          else
+            on_redis_connection_error.call(job, resource: resource, error: error)
           end
         end
 
