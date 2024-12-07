@@ -24,7 +24,7 @@ ActiveJob::Uniqueness.configure do |config|
   #   :raise - raises ActiveJob::Uniqueness::JobNotUnique
   #   proc - custom Proc. For example, ->(job, resource: _, error: _) { job.logger.info("Job already in queue: #{job.class.name} #{job.arguments.inspect} (#{job.job_id})") }
   #
-  # config.on_conflict = :raise
+  # config.on_redis_connection_error = :raise
 
   # Digest method for lock keys generating. Expected to have `hexdigest` class method.
   #
