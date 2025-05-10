@@ -137,6 +137,24 @@ describe ':until_and_while_executing strategy', type: :integration do
         end
       end
 
+      context 'when on_conflict: :reject given' do
+        let(:job_class) do
+          stub_active_job_class do
+            unique :until_and_while_executing, on_conflict: :reject
+          end
+        end
+
+        include_examples 'of a not unique job processing'
+
+        it 'does not raise ActiveJob::Uniqueness::JobNotUnique' do
+          expect { process }.not_to raise_error
+        end
+
+        it 'does not log the skipped job' do
+          expect { process }.not_to log(/Not unique/)
+        end
+      end
+
       context 'when on_conflict: Proc given' do
         let(:job_class) do
           stub_active_job_class do

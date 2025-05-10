@@ -61,6 +61,17 @@ describe ActiveJob::Uniqueness::ActiveJobPatch, '.unique' do
     end
   end
 
+  context 'when on_conflict: :reject action is given' do
+    subject(:make_job_unique) { job_class.unique :until_executed, on_conflict: :reject }
+
+    it 'sets proper values for lock variables', :aggregate_failures do
+      make_job_unique
+
+      expect(job_class.lock_strategy_class).to eq(ActiveJob::Uniqueness::Strategies::UntilExecuted)
+      expect(job_class.lock_options).to eq({ on_conflict: :reject })
+    end
+  end
+
   context 'when on_conflict: Proc action is given' do
     subject(:make_job_unique) { job_class.unique :until_executed, on_conflict: custom_proc }
 

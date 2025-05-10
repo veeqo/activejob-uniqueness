@@ -5,6 +5,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased](https://github.com/veeqo/activejob-uniqueness/compare/v0.4.0...HEAD)
 
+### Added
+
+- [#88](https://github.com/veeqo/activejob-uniqueness/pull/88) Implement reject conflict strategy by[@dmitrytsepelev](https://github.com/dmitrytsepelev)
 
 ## [0.4.0](https://github.com/veeqo/activejob-uniqueness/compare/v0.3.2...v0.4.0) - 2024-12-07
 

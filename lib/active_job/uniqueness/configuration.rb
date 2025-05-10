@@ -31,7 +31,7 @@ module ActiveJob
       end
 
       def validate_on_conflict_action!(action)
-        return if action.nil? || %i[log raise].include?(action) || action.respond_to?(:call)
+        return if action.nil? || %i[log raise reject].include?(action) || action.respond_to?(:call)
 
         raise ActiveJob::Uniqueness::InvalidOnConflictAction, "Unexpected '#{action}' action on conflict"
       end

@@ -154,6 +154,18 @@ shared_examples_for 'a strategy with unique jobs in the queue' do
         end
       end
 
+      context 'when on_conflict: :reject given' do
+        before { job_class.unique strategy, on_conflict: :reject }
+
+        it 'does not raise ActiveJob::Uniqueness::JobNotUnique' do
+          expect { subject }.not_to raise_error
+        end
+
+        it 'does not log the skipped job' do
+          expect { subject }.not_to log(/Not unique/)
+        end
+      end
+
       context 'when on_conflict: Proc given' do
         before { job_class.unique strategy, on_conflict: ->(job) { job.logger.info('Oops') } }
 

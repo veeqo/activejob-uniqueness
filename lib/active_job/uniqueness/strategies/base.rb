@@ -88,6 +88,8 @@ module ActiveJob
           case on_conflict
           when :log then instrument(event, resource: resource)
           when :raise then raise_not_unique_job_error(resource: resource, event: event)
+          when :reject
+            # do nothing
           else
             on_conflict.call(job)
           end
