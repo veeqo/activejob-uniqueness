@@ -5,7 +5,7 @@ module ActiveJob
     # Mocks ActiveJob::Uniqueness::LockManager methods.
     # See ActiveJob::Uniqueness.test_mode!
     class TestLockManager
-      def lock(*_args)
+      def lock(*_args) # rubocop:disable Naming/PredicateMethod, Naming/PredicateName, Lint/RedundantCopDisableDirective
         true
       end
 

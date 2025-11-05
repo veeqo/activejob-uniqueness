@@ -7,6 +7,9 @@ AllCops:
     - gemfiles/**/*
     - activejob-uniqueness.gemspec
 
+Capybara/RSpec/PredicateMatcher:
+  Enabled: false
+
 Layout/LineLength:
   Max: 120
   Exclude:

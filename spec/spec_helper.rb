@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'bundler/setup'
+require 'logger' # Fix concurrent-ruby removing logger dependency which Rails itself does not have
 require 'pry-byebug'
 require 'active_support/core_ext/kernel/reporting'
 

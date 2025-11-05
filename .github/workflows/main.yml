@@ -35,6 +35,7 @@ jobs:
           - gemfiles/activejob_7.1.x.gemfile
           - gemfiles/activejob_7.2.x.gemfile
           - gemfiles/activejob_8.0.x.gemfile
+          - gemfiles/activejob_8.1.x.gemfile
           - gemfiles/sidekiq_4.x.gemfile
           - gemfiles/sidekiq_5.x.gemfile
           - gemfiles/sidekiq_6.x.gemfile
@@ -49,9 +50,13 @@ jobs:
           - ruby: 2.5.9
             gemfile: gemfiles/activejob_8.0.x.gemfile
           - ruby: 2.5.9
+            gemfile: gemfiles/activejob_8.1.x.gemfile
+          - ruby: 2.5.9
             gemfile: gemfiles/sidekiq_6.x.gemfile
           - ruby: 2.5.9
             gemfile: gemfiles/sidekiq_7.x.gemfile
+          - ruby: 2.5.9
+            gemfile: gemfiles/sidekiq_8.x.gemfile
           - ruby: 2.6.10
             gemfile: gemfiles/activejob_7.0.x.gemfile
           - ruby: 2.6.10
@@ -61,15 +66,21 @@ jobs:
           - ruby: 2.6.10
             gemfile: gemfiles/activejob_8.0.x.gemfile
           - ruby: 2.6.10
+            gemfile: gemfiles/activejob_8.1.x.gemfile
+          - ruby: 2.6.10
             gemfile: gemfiles/sidekiq_6.x.gemfile
           - ruby: 2.6.10
             gemfile: gemfiles/sidekiq_7.x.gemfile
+          - ruby: 2.6.10
+            gemfile: gemfiles/sidekiq_8.x.gemfile
           - ruby: 2.7.7
             gemfile: gemfiles/activejob_4.2.x.gemfile
           - ruby: 2.7.7
             gemfile: gemfiles/activejob_7.2.x.gemfile
           - ruby: 2.7.7
             gemfile: gemfiles/activejob_8.0.x.gemfile
+          - ruby: 2.7.7
+            gemfile: gemfiles/activejob_8.1.x.gemfile
           - ruby: 2.7.7
             gemfile: gemfiles/sidekiq_4.x.gemfile
           - ruby: 3.0.5
@@ -80,6 +91,8 @@ jobs:
             gemfile: gemfiles/activejob_7.2.x.gemfile
           - ruby: 3.0.5
             gemfile: gemfiles/activejob_8.0.x.gemfile
+          - ruby: 3.0.5
+            gemfile: gemfiles/activejob_8.1.x.gemfile
           - ruby: 3.0.5
             gemfile: gemfiles/sidekiq_4.x.gemfile
           - ruby: 3.0.5
@@ -92,6 +105,8 @@ jobs:
             gemfile: gemfiles/activejob_6.0.x.gemfile
           - ruby: 3.1.3
             gemfile: gemfiles/activejob_8.0.x.gemfile
+          - ruby: 3.1.3
+            gemfile: gemfiles/activejob_8.1.x.gemfile
           - ruby: 3.1.3
             gemfile: gemfiles/sidekiq_4.x.gemfile
           - ruby: 3.1.3

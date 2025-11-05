@@ -7,7 +7,7 @@ module ActiveJob
     # See https://github.com/leandromoreira/redlock-rb/issues/51 for more details.
     class LockManager < ::Redlock::Client
       # Unlocks a resource by resource only.
-      def delete_lock(resource)
+      def delete_lock(resource) # rubocop:disable Naming/PredicateMethod, Naming/PredicateName, Lint/RedundantCopDisableDirective
         @servers.each do |server|
           synced_redis_connection(server) do |conn|
             conn.call('DEL', resource)
@@ -20,7 +20,7 @@ module ActiveJob
       DELETE_LOCKS_SCAN_COUNT = 1000
 
       # Unlocks multiple resources by key wildcard.
-      def delete_locks(wildcard)
+      def delete_locks(wildcard) # rubocop:disable Naming/PredicateMethod, Naming/PredicateName, Lint/RedundantCopDisableDirective
         @servers.each do |server|
           synced_redis_connection(server) do |conn|
             cursor = 0
