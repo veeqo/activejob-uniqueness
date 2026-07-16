@@ -8,26 +8,32 @@ module ActiveJob
     #   c.lock_ttl = 3.hours
     # end
     #
+    # Plain accessors instead of ActiveSupport::Configurable, which is
+    # deprecated without replacement and removed in Rails 8.2. The gem only
+    # ever reads configuration through the memoized instance
+    # (ActiveJob::Uniqueness.config), so instance-level accessors are a
+    # drop-in replacement.
     class Configuration
-      include ActiveSupport::Configurable
+      attr_accessor :lock_ttl, :lock_prefix, :redlock_servers, :redlock_options,
+                    :lock_strategies, :digest_method
+      attr_reader :on_conflict, :on_redis_connection_error
 
-      config_accessor(:lock_ttl) { 86_400 } # 1.day
-      config_accessor(:lock_prefix) { 'activejob_uniqueness' }
-      config_accessor(:on_conflict) { :raise }
-      config_accessor(:on_redis_connection_error) { :raise }
-      config_accessor(:redlock_servers) { [ENV.fetch('REDIS_URL', 'redis://localhost:6379')] }
-      config_accessor(:redlock_options) { { retry_count: 0 } }
-      config_accessor(:lock_strategies) { {} }
-
-      config_accessor(:digest_method) do
+      def initialize
+        @lock_ttl = 86_400 # 1.day
+        @lock_prefix = 'activejob_uniqueness'
+        @on_conflict = :raise
+        @on_redis_connection_error = :raise
+        @redlock_servers = [ENV.fetch('REDIS_URL', 'redis://localhost:6379')]
+        @redlock_options = { retry_count: 0 }
+        @lock_strategies = {}
         require 'openssl'
-        OpenSSL::Digest::MD5
+        @digest_method = OpenSSL::Digest::MD5
       end
 
       def on_conflict=(action)
         validate_on_conflict_action!(action)
 
-        config.on_conflict = action
+        @on_conflict = action
       end
 
       def validate_on_conflict_action!(action)
@@ -39,7 +45,7 @@ module ActiveJob
       def on_redis_connection_error=(action)
         validate_on_redis_connection_error!(action)
 
-        config.on_redis_connection_error = action
+        @on_redis_connection_error = action
       end
 
       def validate_on_redis_connection_error!(action)
