@@ -123,8 +123,8 @@ describe ActiveJob::Uniqueness, '.configure' do
       end
     end
 
-    it 'raises ArgumentError' do
-      expect { configure }.to raise_error(ArgumentError)
+    it 'raises TypeError' do
+      expect { configure }.to raise_error(TypeError, "no implicit conversion of String into Hash")
     end
   end
 end
