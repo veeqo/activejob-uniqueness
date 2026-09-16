@@ -11,12 +11,14 @@ module ActiveJob
     class Configuration
       include ActiveSupport::Configurable
 
+      REDLOCK_DEFAULTS = { retry_count: 0 }.freeze
+
       config_accessor(:lock_ttl) { 86_400 } # 1.day
       config_accessor(:lock_prefix) { 'activejob_uniqueness' }
       config_accessor(:on_conflict) { :raise }
       config_accessor(:on_redis_connection_error) { :raise }
       config_accessor(:redlock_servers) { [ENV.fetch('REDIS_URL', 'redis://localhost:6379')] }
-      config_accessor(:redlock_options) { { retry_count: 0 } }
+      config_accessor(:redlock_options) { REDLOCK_DEFAULTS.dup }
       config_accessor(:lock_strategies) { {} }
 
       config_accessor(:digest_method) do
@@ -46,6 +48,11 @@ module ActiveJob
         return if action.nil? || action == :raise || action.respond_to?(:call)
 
         raise ActiveJob::Uniqueness::InvalidOnConflictAction, "Unexpected '#{action}' action on_redis_connection_error"
+      end
+
+      def redlock_options=(options)
+        options ||= {}
+        config.redlock_options = REDLOCK_DEFAULTS.merge(options)
       end
     end
   end
